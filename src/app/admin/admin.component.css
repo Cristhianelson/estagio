@@ -1,0 +1,50 @@
+.cardprincipal {
+  max-width: 100%;
+  /*border: solid 1px black;*/
+}
+
+/*
+mat-grid-list {
+  border: solid 1px black;
+}
+
+mat-horizontal-stepper{
+  border: solid 1px black;
+  padding: 0%;
+  margin: 0%;
+} */
+
+/*
+.controles-container{
+  width: 100%;
+  padding: 5%;    
+}
+
+.controles-container > * {
+  width: 100%;
+  }
+
+.slide-toggle-padding{
+  padding-bottom: 10px;
+}
+*/
+
+.padding5{
+  width: 100%;
+  padding: 5%;    
+}
+
+.padding5 > * {
+  width: 100%;
+  }
+
+.controles-t > * {
+  width: 80%;
+  left: 10%;
+  }
+
+  .margin {
+    margin: 0 10px;
+  }
+
+  
