@@ -12,6 +12,9 @@ import {CdkTableModule} from '@angular/cdk/table';
 import {CdkTreeModule} from '@angular/cdk/tree';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+
+import { routing } from './app.routing'
+
 import {
   MatAutocompleteModule,
   MatBadgeModule,
@@ -52,16 +55,19 @@ import {
 import {AdminService} from './admin/admin.service';
 import {ReactiveFormsModule} from '@angular/forms';
 import { AppService } from './app.service';
+import { QuestionarioComponent } from './questionario/questionario.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminComponent
+    AdminComponent,
+    QuestionarioComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    routing,
     A11yModule,
     CdkStepperModule,
     CdkTableModule,

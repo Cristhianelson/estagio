@@ -1,0 +1,23 @@
+.cardprincipal {
+    max-width: 100%;
+  }
+  
+.padding5{
+    width: 100%;
+    padding: 5%;    
+}
+
+.padding5 > * {
+    width: 100%;
+}
+
+.controles-t > * {
+    width: 80%;
+    left: 10%;
+}
+
+.margin {
+    margin: 0 10px;
+}
+
+    

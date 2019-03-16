@@ -1,0 +1,109 @@
+<mat-card class="cardprincipal"> <!-- Layout - Card -->
+  <mat-grid-list cols="1" rowHeight="400px"> <!-- Layout - Grid List -->
+    <mat-grid-tile>
+    <div class="padding5">            
+      <mat-horizontal-stepper linear #stepper><!-- Layout - Stepper -->
+        <mat-step [stepControl]="firstFormGroup">
+          <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Informações Básicas</ng-template>
+            <div class="controles-t">
+              <input type="hidden" formControlName="$key">
+              <mat-form-field> <!-- Tópico //-->
+                <input matInput placeholder="Tópico" formControlName="topico" required>
+              </mat-form-field> <!-- Tópico //-->
+              <div>
+                <ng-template matStepLabel>Público Alvo</ng-template>
+                  <div class="controles-t">
+                      <mat-accordion> <!-- Público Alvo -->
+                        <mat-expansion-panel [expanded]="step === 0" hideToggle>
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              Público Alvo *
+                            </mat-panel-title>
+                            <mat-panel-description>
+                              Público(s) escolhido: {{publicos.selectedOptions.selected.length}}
+                            </mat-panel-description>
+                          </mat-expansion-panel-header>
+                
+                          <mat-selection-list matInput #publicos formControlName="publico_alvo">
+                            <mat-list-option *ngFor="let publico of tipoPublicos" [value]="publico.value">
+                              {{publico.viewValue}}
+                            </mat-list-option>
+                          </mat-selection-list>
+                        </mat-expansion-panel>
+                      </mat-accordion> <!-- Público Alvo -->
+                  </div>    
+              </div>                               
+            </div>
+            <div>
+              <button mat-button matStepperNext>Próximo</button>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup">
+            <form [formGroup]="secondFormGroup">
+              <ng-template matStepLabel>Datas</ng-template>
+              <div class="controles-t">
+                  <div> <!-- Status Ativado/Terminado -->
+                    <mat-slide-toggle formControlName="por_disciplina" class="margin">Por disciplina</mat-slide-toggle>
+                  </div>
+                  <mat-form-field> <!-- Típo de resposta -->
+                    <input matInput  placeholder="Típo de resposta" formControlName="tipo_resposta" required>
+                  </mat-form-field> <!-- Típo de resposta -->  
+              </div>
+              <div>
+                <button mat-button matStepperPrevious>Voltar</button>
+                <button mat-button matStepperNext>Próximo</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="thirdFormGroup">
+              <form [formGroup]="thirdFormGroup">
+                <ng-template matStepLabel>Público Alvo</ng-template>
+                <div class="controles-t">
+                  <mat-form-field> <!-- Possiveis respostas -->
+                    <input matInput  placeholder="Possiveis respostas" formControlName="possiveis_respostas" required>
+                  </mat-form-field> <!-- Possiveis respostas -->  
+                </div>
+                <div>
+                  <button mat-button matStepperPrevious>Voltar</button>
+                  <button mat-button matStepperNext>Próximo</button>
+                </div>
+              </form>
+            </mat-step>
+          <mat-step>
+            <ng-template matStepLabel>Concluir</ng-template>
+            Deseja concluir?
+            <div class="padding4">
+              <button mat-button type="submit" (click)="onSubmit()">Salvar</button>
+              <button mat-button matStepperPrevious>Voltar</button>
+              <button mat-button (click)="stepper.reset()">Cancelar</button>
+            </div>
+          </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-card>
+
+<!--
+-----------------------------------------------------------------------------
+
+var mongoose = require('mongoose');
+var Schema   = mongoose.Schema;
+var Questao  = require('./QuestaoModel.js');
+
+var QuestionarioSchema = new Schema({
+  'topico' : String,
+  'publico_alvo' : Number,
+  'por_disciplina': Boolean,
+  'tipo_resposta' : Number,
+  'questoes': [ Questao.schema ],
+  'possiveis_respostas': [ Schema.Types.Mixed ],
+  'labels_respostas': [ String ],
+});
+
+module.exports = mongoose.model('Questionario', QuestionarioSchema);
+
+-----------------------------------------------------------------------------
+-->
