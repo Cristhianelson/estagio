@@ -51,6 +51,7 @@ import {
 } from '@angular/material';
 import {AdminService} from './admin/admin.service';
 import {ReactiveFormsModule} from '@angular/forms';
+import { AppService } from './app.service';
 
 @NgModule({
   declarations: [
@@ -104,7 +105,7 @@ import {ReactiveFormsModule} from '@angular/forms';
     ScrollingModule,
     ReactiveFormsModule
   ],
-  providers: [AdminService],
+  providers: [AdminService, AppService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
