@@ -1,20 +1,37 @@
 <mat-card class="cardprincipal"> <!-- Layout - Card -->
-  <mat-grid-list cols="1" rowHeight="400px"> <!-- Layout - Grid List -->
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <div formArrayName="items" *ngFor="let item of orderForm.get('items').controls; let i = index;">
+      <div [formGroupName]="i">
+        <input formControlName="name" placeholder="Item name">
+        <input formControlName="description" placeholder="Item description">
+        <input formControlName="price" placeholder="Item price">
+      </div>
+
+      Chosen name: {{ orderForm.controls.items.controls[i].controls.name.value }}
+    </div>
+  </form>
+  <button mat-button type="submit" (click)="addItem()">Adicionar mais campos</button>
+</mat-card>
+
+
+<!--
+<mat-card class="cardprincipal"> <!-- Layout - Card 
+  <mat-grid-list cols="1" rowHeight="400px"> <!-- Layout - Grid List 
     <mat-grid-tile>
     <div class="padding5">            
-      <mat-horizontal-stepper linear #stepper><!-- Layout - Stepper -->
+      <mat-horizontal-stepper linear #stepper><!-- Layout - Stepper 
         <mat-step [stepControl]="firstFormGroup">
           <form [formGroup]="firstFormGroup">
             <ng-template matStepLabel>Informações Básicas</ng-template>
             <div class="controles-t">
               <input type="hidden" formControlName="$key">
-              <mat-form-field> <!-- Tópico //-->
+              <mat-form-field> <!-- Tópico //
                 <input matInput placeholder="Tópico" formControlName="topico" required>
-              </mat-form-field> <!-- Tópico //-->
+              </mat-form-field> <!-- Tópico //
               <div>
                 <ng-template matStepLabel>Público Alvo</ng-template>
                   <div class="controles-t">
-                      <mat-accordion> <!-- Público Alvo -->
+                      <mat-accordion> <!-- Público Alvo 
                         <mat-expansion-panel [expanded]="step === 0" hideToggle>
                           <mat-expansion-panel-header>
                             <mat-panel-title>
@@ -31,7 +48,7 @@
                             </mat-list-option>
                           </mat-selection-list>
                         </mat-expansion-panel>
-                      </mat-accordion> <!-- Público Alvo -->
+                      </mat-accordion> <!-- Público Alvo 
                   </div>    
               </div>                               
             </div>
@@ -44,10 +61,10 @@
           <form [formGroup]="secondFormGroup">
             <ng-template matStepLabel>Repostas</ng-template>
             <div class="controles-t">
-                <div> <!-- Status Ativado/Terminado -->
+                <div> <!-- Status Ativado/Terminado 
                   <mat-slide-toggle formControlName="por_disciplina" class="margin">Por disciplina "questionário vinculado a disciplina q a turma cursou"</mat-slide-toggle>
-                </div> <!-- Status Ativado/Terminado -->
-                <div> <!-- Típo de resposta -->
+                </div> <!-- Status Ativado/Terminado 
+                <div> <!-- Típo de resposta 
                 <label id="radio-group-label">Escolha o típo de resposta desejado</label>
                 <mat-radio-group
                   aria-labelledby="example-radio-group-label"
@@ -57,7 +74,7 @@
                     {{tpresposta.viewValue}}
                   </mat-radio-button>
                 </mat-radio-group> 
-              </div><!-- Típo de resposta --> 
+              </div><!-- Típo de resposta 
             </div>
             <div>
               <button mat-button matStepperPrevious>Voltar</button>
@@ -69,12 +86,12 @@
           <form [formGroup]="thirdFormGroup">
             <ng-template matStepLabel>Questões</ng-template>
             <div class="controles-t">
-              <mat-form-field> <!-- Questões -->
+              <mat-form-field> <!-- Questões 
                 <input matInput  placeholder="Quantidade de questões" formControlName="questoes" required>
-              </mat-form-field> <!-- Questões --> 
-              <mat-form-field> <!-- Possiveis respostas -->
-                <input matInput  placeholder="Quantidade de Possiveis respostas" formControlName="possiveis_respostas" required>
-              </mat-form-field> <!-- Possiveis respostas -->  
+              </mat-form-field> <!-- Questões 
+              <mat-form-field> <!-- Possiveis respostas 
+                <input matInput  placeholder="Quantidade de possiveis respostas" formControlName="possiveis_respostas" required>
+              </mat-form-field> <!-- Possiveis respostas  
             </div>
             <div>
               <button mat-button matStepperPrevious>Voltar</button>
@@ -87,12 +104,11 @@
             <ng-template matStepLabel>Label</ng-template>
             <div class="controles-t">
               <label>
-                <button mat-button type="submit" (click)="add()">add</button>
-                <ul>
-                  <li *ngFor="let item of array">{{item}}</li>
-                </ul>
+                  <div><h1>{{this.firstFormGroup.get('topico').value}}</h1></div>
+                  <div>Público Alvo: {{this.firstFormGroup.get('publico_alvo').value}}</div>
+                  <p *ngIf="this.firstFormGroup.get('publico_alvo').value == 0">Discentes</p>
               </label>
-            </div>
+            </div><br/>
             <div>
               <button mat-button matStepperPrevious>Voltar</button>
               <button mat-button matStepperNext>Próximo</button>
@@ -112,7 +128,7 @@
     </div>
     </mat-grid-tile>
   </mat-grid-list>
-</mat-card>
+</mat-card> -->
 
 <!--
 -----------------------------------------------------------------------------

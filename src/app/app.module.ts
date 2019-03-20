@@ -13,7 +13,11 @@ import {CdkTreeModule} from '@angular/cdk/tree';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 
-import { routing } from './app.routing'
+import {AdminService} from './admin/admin.service';
+import {ReactiveFormsModule} from '@angular/forms';
+import { AppService } from './app.service';
+import { QuestionarioComponent } from './questionario/questionario.component';
+import { routing } from './app.routing';
 
 import {
   MatAutocompleteModule,
@@ -50,12 +54,8 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatTreeModule,
+  MatTreeModule
 } from '@angular/material';
-import {AdminService} from './admin/admin.service';
-import {ReactiveFormsModule} from '@angular/forms';
-import { AppService } from './app.service';
-import { QuestionarioComponent } from './questionario/questionario.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +109,7 @@ import { QuestionarioComponent } from './questionario/questionario.component';
     MatTooltipModule,
     MatTreeModule,
     ScrollingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [AdminService, AppService],
   bootstrap: [AppComponent]
