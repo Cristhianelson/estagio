@@ -7,6 +7,11 @@ export interface Publico {
   viewValue: string;
 }
 
+export interface Resposta{
+  value: string;
+  viewValue: string;
+}
+
 @Component({
   selector: 'est-questionario',
   templateUrl: './questionario.component.html',
@@ -27,11 +32,13 @@ export class QuestionarioComponent implements OnInit {
     });
     this.secondFormGroup = this._formBuilder.group({
       por_disciplina:  [true],
-      tipo_resposta:  ['', Validators.required],
-      questoes:  ['']
+      tipo_resposta:  ['', Validators.required]
     });
     this.thirdFormGroup = this._formBuilder.group({
       possiveis_respostas: [''],
+      questoes:  ['', Validators.required]      
+    });
+    this.fourthFormGroup = this._formBuilder.group({
       labels_respostas: ['']
     });
   }
@@ -40,6 +47,7 @@ export class QuestionarioComponent implements OnInit {
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
+  fourthFormGroup: FormGroup;
 
   step = 0; //Layout - Expansion Panel
 
@@ -50,6 +58,12 @@ export class QuestionarioComponent implements OnInit {
     {value: '2', viewValue: 'Técnicos'}
   ]; 
 
+  tipoRespostas: Resposta[] = [
+    {value: '0', viewValue: 'Objetiva'}, 
+    {value: '1', viewValue: 'Texto Curto'}, 
+    {value: '2', viewValue: 'Texto Longo'}
+  ];
+
   onSubmit() {
     alert(JSON.stringify(this.firstFormGroup.value, 
                          this.secondFormGroup.value, 
@@ -58,6 +72,10 @@ export class QuestionarioComponent implements OnInit {
     console.log(this.firstFormGroup.value, 
                 this.secondFormGroup.value, 
                 this.thirdFormGroup.value);
+  }
+
+  add(){
+    alert(JSON.stringify(this.firstFormGroup.get('topico').value));
   }
 
 }
