@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormArray } from '@angular/forms'; //FormArray
 
-  /*
+
   export interface Publico {
     value: string;
     viewValue: string;
@@ -12,33 +12,28 @@ import { FormArray } from '@angular/forms'; //FormArray
     value: string;
     viewValue: string;
   }
-  */
 
 @Component({
   selector: 'est-questionario',
   templateUrl: './questionario.component.html',
   styleUrls: ['./questionario.component.css'],
-  providers: []
+  providers: [],
 })
 export class QuestionarioComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder) { }
 
-  ngOnInit() {
-    
-      /*topico: ['', Validators.required],
+  ngOnInit() {  
+    this.orderForm = this.formBuilder.group({
+      topico: ['', Validators.required],
       publico_alvo: ['', Validators.required],
       por_disciplina:  [true],
       tipo_resposta:  ['', Validators.required],
       possiveis_respostas: [''],
       questoes:  ['', Validators.required],
-      labels_respostas: [''],*/
-    
-      this.orderForm = this.formBuilder.group({
-        customerName: '',
-        email: '',
-        items: this.formBuilder.array([ this.createItem() ])
-      });
+      labels_respostas: [''],
+      items: this.formBuilder.array([ this.createItem() ])
+    });
   }
 
   orderForm: FormGroup; //FormArray
@@ -46,9 +41,7 @@ export class QuestionarioComponent implements OnInit {
 
   createItem(): FormGroup {
     return this.formBuilder.group({
-      name: '',
-      description: '',
-      price: ''
+      questoes: ''
     });
   }
 
@@ -57,21 +50,21 @@ export class QuestionarioComponent implements OnInit {
     this.items.push(this.createItem());
   }
 
-  /*
-  step = 0; //Layout - Expansion Panel
+ 
 
-  //Layout - List
+
+  //Layout - List - Publicos
   tipoPublicos: Publico[] = [
     {value: '0', viewValue: 'Discentes'},
     {value: '1', viewValue: 'Docentes'},
     {value: '2', viewValue: 'Técnicos'}
   ]; 
 
-  //Layout - List
+  //Layout - List - Respostas
   tipoRespostas: Resposta[] = [
     {value: '0', viewValue: 'Objetiva'}, 
     {value: '1', viewValue: 'Texto Curto'}, 
     {value: '2', viewValue: 'Texto Longo'}
   ];
-  */
+
 }
