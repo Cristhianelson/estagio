@@ -1,33 +1,6 @@
 .cardprincipal {
   max-width: 100%;
-  /*border: solid 1px black;*/
 }
-
-/*
-mat-grid-list {
-  border: solid 1px black;
-}
-
-mat-horizontal-stepper{
-  border: solid 1px black;
-  padding: 0%;
-  margin: 0%;
-} */
-
-/*
-.controles-container{
-  width: 100%;
-  padding: 5%;    
-}
-
-.controles-container > * {
-  width: 100%;
-  }
-
-.slide-toggle-padding{
-  padding-bottom: 10px;
-}
-*/
 
 .padding5{
   width: 100%;
@@ -46,5 +19,23 @@ mat-horizontal-stepper{
   .margin {
     margin: 0 10px;
   }
+
+
+.padding1{
+  width: 100%;
+  padding: 1%;    
+}
+
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+  
+.radio-button {
+  margin: 5px;
+}
+
 
   

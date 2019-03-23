@@ -1,95 +1,56 @@
+<!-- AVALIAÇÃO -->
 <mat-card class="cardprincipal"> <!-- Layout - Card -->
-  <mat-grid-list cols="1" rowHeight="400px"> <!-- Layout - Grid List -->
+  <mat-grid-list cols="1" rowHeight="800px"> <!-- Layout - Grid List -->
     <mat-grid-tile>
-    <div class="padding5">            
-      <mat-horizontal-stepper linear #stepper><!-- Layout - Stepper -->
-        <mat-step [stepControl]="firstFormGroup">
-          <form [formGroup]="firstFormGroup">
-            <ng-template matStepLabel>Informações Básicas</ng-template>
-            <div class="controles-t">
-              <input type="hidden" formControlName="$key">
-              <mat-form-field> <!-- Título //-->
-                <input matInput placeholder="Título" formControlName="titulo" required>
-              </mat-form-field> <!-- Título //-->
-              <mat-form-field> <!-- Questionário -->
-                <textarea matInput placeholder ="Questionário" formControlName="questionarios" required> </textarea>
-              </mat-form-field> <!-- Questionário --> 
-              <mat-form-field> <!-- Período -->
-                <input matInput  placeholder="Período" formControlName="periodo" required>
-              </mat-form-field> <!-- Período -->          
-              <div> <!-- Status Ativado/Terminado -->
-                <mat-slide-toggle formControlName="ativo" class="margin">Ativo</mat-slide-toggle> 
-                <mat-slide-toggle formControlName="terminado" class="margin">Terminado</mat-slide-toggle> 
-              </div>                                    
-            </div>
-            <div>
-              <button mat-button matStepperNext>Próximo</button>
-            </div>
-          </form>
-        </mat-step>
-        <mat-step [stepControl]="secondFormGroup">
-          <form [formGroup]="secondFormGroup">
-            <ng-template matStepLabel>Datas</ng-template>
-            <div class="controles-t">
-              <mat-form-field> <!-- Data Ativação -->
-                <input matInput placeholder="Data Ativação" formControlName="data_ativacao" [matDatepicker]="picker1" [formControl]="date">
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-              </mat-form-field> <!-- Data Ativação -->
-              <mat-form-field> <!-- Data Limite -->
-                <input matInput placeholder="Data Limite" formControlName="data_limite" [matDatepicker]="picker2" required>
-                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                <mat-datepicker #picker2></mat-datepicker>
-              </mat-form-field>  <!-- Data Limite -->          
-              <mat-form-field> <!-- Observação -->
-                <textarea matInput placeholder ="Observações" formControlName="observacao" required> </textarea>
-              </mat-form-field> <!-- Observação -->
-            </div>
-            <div>
-              <button mat-button matStepperPrevious>Voltar</button>
-              <button mat-button matStepperNext>Próximo</button>
-            </div>
-          </form>
-        </mat-step>
-        <mat-step [stepControl]="thirdFormGroup">
-            <form [formGroup]="thirdFormGroup">
-              <ng-template matStepLabel>Público Alvo</ng-template>
-              <div class="controles-t">
-                  <mat-accordion> <!-- Público Alvo -->
-                    <mat-expansion-panel [expanded]="step === 0" hideToggle>
-                      <mat-expansion-panel-header>
-                        <mat-panel-title>
-                          Público Alvo *
-                        </mat-panel-title>
-                        <mat-panel-description>
-                          Público(s) escolhido: {{publicos.selectedOptions.selected.length}}
-                        </mat-panel-description>
-                      </mat-expansion-panel-header>
-            
-                      <mat-selection-list matInput #publicos formControlName="publico_alvo">
-                        <mat-list-option *ngFor="let publico of tipoPublicos" [value]="publico.value">
-                          {{publico.viewValue}}
-                        </mat-list-option>
-                      </mat-selection-list>
-                    </mat-expansion-panel>
-                  </mat-accordion> <!-- Público Alvo -->
-              </div>
-              <div>
-                <button mat-button matStepperPrevious>Voltar</button>
-                <button mat-button matStepperNext>Próximo</button>
-              </div>
-            </form>
-          </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Concluir</ng-template>
-          Deseja concluir?
-          <div class="padding4">
-            <button mat-button type="submit" (click)="onSubmit()">Salvar</button>
-            <button mat-button matStepperPrevious>Voltar</button>
-            <button mat-button (click)="stepper.reset()">Cancelar</button>
-          </div>
-        </mat-step>
-      </mat-horizontal-stepper> <!-- Layout - Stepper -->          
+    <div class="padding5">         
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Informações Básicas</ng-template>
+      <div class="controles-t">
+        <input type="hidden" formControlName="$key">
+        <mat-form-field> <!-- Título //-->
+          <input matInput placeholder="Título" formControlName="titulo" required>
+        </mat-form-field> <!-- Título //-->
+        <mat-form-field> <!-- Período -->
+          <input matInput  placeholder="Período" formControlName="periodo" required>
+        </mat-form-field> <!-- Período -->          
+        <div> <!-- Status Ativado/Terminado -->
+          <mat-slide-toggle formControlName="ativo" class="margin">Ativo</mat-slide-toggle> 
+          <mat-slide-toggle formControlName="terminado" class="margin">Terminado</mat-slide-toggle> 
+        </div>     
+      <ng-template matStepLabel>Datas</ng-template>            
+        <mat-form-field> <!-- Data Ativação -->
+          <input matInput placeholder="Data Ativação" formControlName="data_ativacao" [matDatepicker]="picker1" [formControl]="date">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field> <!-- Data Ativação -->
+        <mat-form-field> <!-- Data Limite -->
+          <input matInput placeholder="Data Limite" formControlName="data_limite" [matDatepicker]="picker2" required>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>  <!-- Data Limite -->          
+        <mat-form-field> <!-- Observação -->
+          <textarea matInput placeholder ="Observações" formControlName="observacao" required> </textarea>
+        </mat-form-field> <!-- Observação -->      
+        <ng-template matStepLabel>Público Alvo</ng-template>              
+            <mat-accordion> <!-- Público Alvo -->
+              <mat-expansion-panel [expanded]="step === 0" hideToggle>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Público Alvo *
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    Público(s) escolhido: {{publicos.selectedOptions.selected.length}}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>      
+                <mat-selection-list matInput #publicos formControlName="publico_alvo">
+                  <mat-list-option *ngFor="let publico of tipoPublicos" [value]="publico.value">
+                    {{publico.viewValue}}
+                  </mat-list-option>
+                </mat-selection-list>
+              </mat-expansion-panel>
+            </mat-accordion> <!-- Público Alvo -->
+        </div>        
+      </form>            
     </div>
     </mat-grid-tile>
   </mat-grid-list> <!-- Layout - Grid List -->
@@ -116,6 +77,96 @@ var AvaliacaoSchema = new Schema({
 });
 
 module.exports = mongoose.model('Avaliacao', AvaliacaoSchema);
+
+-----------------------------------------------------------------------------
+-->
+
+
+<mat-card class="cardprincipal"> <!-- Layout - Card -->
+  <form [formGroup]="orderForm">
+      <mat-grid-list cols="2" rowHeight="300px"> <!-- Layout - Grid List -->
+        <mat-grid-tile> <!-- cols="1" -->
+          <div class="padding5"> 
+            <mat-form-field> <!-- Tópico // -->
+              <input matInput placeholder="Tópico" formControlName="topico" required>
+            </mat-form-field> <!-- Tópico // -->
+            <label> <!-- Por disciplina -->
+              <mat-slide-toggle formControlName="por_disciplina" class="margin">Por disciplina "questionário vinculado a disciplina q a turma cursou"</mat-slide-toggle>
+            </label> <!-- Por disciplina -->
+            <br/><br/>
+            <div><!-- Típo de resposta --> 
+              <label id="radio-group-label">Escolha o típo de resposta desejado</label>
+                <mat-radio-group
+                  aria-labelledby="example-radio-group-label"
+                  class="radio-group"
+                  formControlName="tipo_resposta">
+                  <mat-radio-button class="radio-button" *ngFor="let tpresposta of tipoRespostas" [value]="tpresposta.value">
+                    {{tpresposta.viewValue}}
+                  </mat-radio-button>
+                </mat-radio-group> 
+            </div><!-- Típo de resposta -->      
+                  
+          </div>
+        </mat-grid-tile> <!-- cols="1" -->
+        <mat-grid-tile> <!-- cols="2" -->
+          <div class="padding5"> 
+            <!-- Público Alvo -->    
+            <mat-selection-list matInput #publicos formControlName="publico_alvo">
+                <mat-list-option *ngFor="let publico of tipoPublicos" [value]="publico.value">
+                  {{publico.viewValue}}
+                </mat-list-option>
+              </mat-selection-list>
+            <!-- Público Alvo -->
+            <mat-form-field> <!-- Possiveis respostas -->
+              <input matInput placeholder="Quantidade de possiveis respostas" formControlName="possiveis_respostas" required>
+            </mat-form-field> <!-- Possiveis respostas -->
+            <!--<mat-form-field> <!-- Questões 
+              <input matInput  placeholder="Questão 01" formControlName="questoes" required>
+            </mat-form-field>  Questões -->
+            <button mat-button type="submit" (click)="addItem()">Acrescentar</button>
+          </div>
+        </mat-grid-tile> <!-- cols="2" -->
+      </mat-grid-list>    
+    </form>
+  <button mat-button type="submit" (click)="addItem()">Adicionar mais campos</button>
+</mat-card>
+
+<mat-card class="cardprincipal">
+  <div class="padding1"> 
+    <div> 
+      Tópico:<h1>{{ orderForm.controls.topico.value }}</h1>
+    </div>
+    
+    <form [formGroup]="orderForm">
+      <div formArrayName="items" *ngFor="let item of orderForm.get('items').controls; let i = index;">
+        <div [formGroupName]="i">
+            <mat-form-field> <!-- Tópico // -->
+              <input matInput placeholder="Questão" formControlName="questoes" required>
+            </mat-form-field>            
+        </div>
+      </div> 
+    </form>
+  </div>
+</mat-card>
+
+<!--
+-----------------------------------------------------------------------------
+
+var mongoose = require('mongoose');
+var Schema   = mongoose.Schema;
+var Questao  = require('./QuestaoModel.js');
+
+var QuestionarioSchema = new Schema({
+  'topico' : String,
+  'publico_alvo' : Number,
+  'por_disciplina': Boolean,
+  'tipo_resposta' : Number,
+  'questoes': [ Questao.schema ],
+  'possiveis_respostas': [ Schema.Types.Mixed ],
+  'labels_respostas': [ String ],
+});
+
+module.exports = mongoose.model('Questionario', QuestionarioSchema);
 
 -----------------------------------------------------------------------------
 -->

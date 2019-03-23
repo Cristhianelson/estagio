@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {AdminService} from './admin.service';
-import {FormControl} from '@angular/forms';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms'; //Layout - Stepper
-import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper'; //Layout - Stepper - Icon Concluido
+import { FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray } from '@angular/forms'; //FormArray
 
 export interface Publico {
+  value: string;
+  viewValue: string;
+}
+
+export interface Resposta{
   value: string;
   viewValue: string;
 }
@@ -13,60 +17,89 @@ export interface Publico {
   selector: 'est-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
-  providers: [{
-    provide: STEPPER_GLOBAL_OPTIONS, useValue: {displayDefaultIndicatorType: false}
-  }]//Layout - Stepper - Icon Concluido
+  providers: []
 })
 export class AdminComponent implements OnInit {
 
-  constructor(private service: AdminService, private _formBuilder: FormBuilder) { } //Layout - Stepper
+  constructor(private formBuilder: FormBuilder) { } 
 
   ngOnInit() {
-    this.firstFormGroup = this._formBuilder.group({ //Layout - Stepper
+    this.firstFormGroup = this.formBuilder.group({ 
       $key: ['0'],
       titulo: ['', Validators.required],
-      questionarios: ['', Validators.required],
+      questionarios: [''],
       periodo: ['', Validators.required],
       ativo: [true],
-      terminado: [false]
-    });
-    this.secondFormGroup = this._formBuilder.group({
+      terminado: [false],    
       data_ativacao:  [''],
       data_limite:  ['', Validators.required],
-      observacao:  ['', Validators.required]
-    });
-    this.thirdFormGroup = this._formBuilder.group({
+      observacao:  ['', Validators.required],    
       publico_alvo: ['', Validators.required]
+    });
+
+    this.orderForm = this.formBuilder.group({
+      topico: ['', Validators.required],
+      publico_alvo: ['', Validators.required],
+      por_disciplina:  [true],
+      tipo_resposta:  ['', Validators.required],
+      possiveis_respostas: [''],
+      questoes:  ['', Validators.required],
+      labels_respostas: [''],
+      items: this.formBuilder.array([ this.createItem() ])
     });
   }
 
+
+  //---------------------------------------------- FORMARRAY E FORMGROUP
+  orderForm: FormGroup; //FormArray
+  items: FormArray; //FormArray
+
+  //Layout - Stepper
+  firstFormGroup: FormGroup;
+
+
+
+  //---------------------------------------------- VARIÁVEIS
   date = new FormControl(new Date());
   serializedDate = new FormControl((new Date()).toISOString());
 
   step = 0; //Layout - Expansion Panel
 
-  //Layout - List
+
+
+  //---------------------------------------------- ARRAYS
+  //Layout - List - Publicos
   tipoPublicos: Publico[] = [
     {value: '0', viewValue: 'Discentes'},
     {value: '1', viewValue: 'Docentes'},
     {value: '2', viewValue: 'Técnicos'}
   ]; 
 
-  //Layout - Stepper
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-  thirdFormGroup: FormGroup;
+  //Layout - List - Respostas
+  tipoRespostas: Resposta[] = [
+    {value: '0', viewValue: 'Objetiva'}, 
+    {value: '1', viewValue: 'Texto Curto'}, 
+    {value: '2', viewValue: 'Texto Longo'}
+  ];
 
-  model: any = {};
+  
+
+  //---------------------------------------------- AÇÕES
+  createItem(): FormGroup {
+    return this.formBuilder.group({
+      questoes: ''
+    });
+  }
+
+  addItem(): void {
+    this.items = this.orderForm.get('items') as FormArray;
+    this.items.push(this.createItem());
+  }
 
   onSubmit() {
-    alert(JSON.stringify(this.firstFormGroup.value, 
-                         this.secondFormGroup.value, 
-                         this.thirdFormGroup.value));
+    alert(JSON.stringify(this.firstFormGroup.value));
 
-    console.log(this.firstFormGroup.value, 
-                this.secondFormGroup.value, 
-                this.thirdFormGroup.value);
+    console.log(this.firstFormGroup.value);
   }
 
 }

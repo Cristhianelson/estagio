@@ -34,7 +34,7 @@
               </mat-selection-list>
             <!-- Público Alvo -->
             <mat-form-field> <!-- Possiveis respostas -->
-              <input matInput  placeholder="Quantidade de possiveis respostas" formControlName="possiveis_respostas" required>
+              <input matInput placeholder="Quantidade de possiveis respostas" formControlName="possiveis_respostas" required>
             </mat-form-field> <!-- Possiveis respostas -->
             <!--<mat-form-field> <!-- Questões 
               <input matInput  placeholder="Questão 01" formControlName="questoes" required>
@@ -50,7 +50,7 @@
 <mat-card class="cardprincipal">
   <div class="padding1"> 
     <div> 
-      Tópico:<h1>{{ orderForm.controls.topico.value }} </h1>
+      Tópico:<h1>{{ orderForm.controls.topico.value }}</h1>
     </div>
     
     <form [formGroup]="orderForm">
@@ -58,129 +58,12 @@
         <div [formGroupName]="i">
             <mat-form-field> <!-- Tópico // -->
               <input matInput placeholder="Questão" formControlName="questoes" required>
-            </mat-form-field>
+            </mat-form-field>            
         </div>
       </div> 
     </form>
   </div>
 </mat-card>
-
-
-<!--
-<mat-card class="cardprincipal"> <!-- Layout - Card 
-  <mat-grid-list cols="1" rowHeight="400px"> <!-- Layout - Grid List 
-    <mat-grid-tile>
-    <div class="padding5">            
-      <mat-horizontal-stepper linear #stepper><!-- Layout - Stepper 
-        <mat-step [stepControl]="firstFormGroup">
-          <form [formGroup]="firstFormGroup">
-            <ng-template matStepLabel>Informações Básicas</ng-template>
-            <div class="controles-t">
-              <input type="hidden" formControlName="$key">
-              <mat-form-field> <!-- Tópico //
-                <input matInput placeholder="Tópico" formControlName="topico" required>
-              </mat-form-field> <!-- Tópico //
-              <div>
-                <ng-template matStepLabel>Público Alvo</ng-template>
-                  <div class="controles-t">
-                      <mat-accordion> <!-- Público Alvo 
-                        <mat-expansion-panel [expanded]="step === 0" hideToggle>
-                          <mat-expansion-panel-header>
-                            <mat-panel-title>
-                              Público Alvo *
-                            </mat-panel-title>
-                            <mat-panel-description>
-                              Público(s) escolhido: {{publicos.selectedOptions.selected.length}}
-                            </mat-panel-description>
-                          </mat-expansion-panel-header>
-                
-                          <mat-selection-list matInput #publicos formControlName="publico_alvo">
-                            <mat-list-option *ngFor="let publico of tipoPublicos" [value]="publico.value">
-                              {{publico.viewValue}}
-                            </mat-list-option>
-                          </mat-selection-list>
-                        </mat-expansion-panel>
-                      </mat-accordion> <!-- Público Alvo 
-                  </div>    
-              </div>                               
-            </div>
-            <div>
-              <button mat-button matStepperNext>Próximo</button>
-            </div>
-          </form>
-        </mat-step>
-        <mat-step [stepControl]="secondFormGroup">
-          <form [formGroup]="secondFormGroup">
-            <ng-template matStepLabel>Repostas</ng-template>
-            <div class="controles-t">
-                <div> <!-- Status Ativado/Terminado 
-                  <mat-slide-toggle formControlName="por_disciplina" class="margin">Por disciplina "questionário vinculado a disciplina q a turma cursou"</mat-slide-toggle>
-                </div> <!-- Status Ativado/Terminado 
-                <div> <!-- Típo de resposta 
-                <label id="radio-group-label">Escolha o típo de resposta desejado</label>
-                <mat-radio-group
-                  aria-labelledby="example-radio-group-label"
-                  class="radio-group"
-                  formControlName="tipo_resposta">
-                  <mat-radio-button class="radio-button" *ngFor="let tpresposta of tipoRespostas" [value]="tpresposta.value">
-                    {{tpresposta.viewValue}}
-                  </mat-radio-button>
-                </mat-radio-group> 
-              </div><!-- Típo de resposta 
-            </div>
-            <div>
-              <button mat-button matStepperPrevious>Voltar</button>
-              <button mat-button matStepperNext>Próximo</button>
-            </div>
-          </form>
-        </mat-step>
-        <mat-step [stepControl]="thirdFormGroup">
-          <form [formGroup]="thirdFormGroup">
-            <ng-template matStepLabel>Questões</ng-template>
-            <div class="controles-t">
-              <mat-form-field> <!-- Questões 
-                <input matInput  placeholder="Quantidade de questões" formControlName="questoes" required>
-              </mat-form-field> <!-- Questões 
-              <mat-form-field> <!-- Possiveis respostas 
-                <input matInput  placeholder="Quantidade de possiveis respostas" formControlName="possiveis_respostas" required>
-              </mat-form-field> <!-- Possiveis respostas  
-            </div>
-            <div>
-              <button mat-button matStepperPrevious>Voltar</button>
-              <button mat-button matStepperNext>Próximo</button>
-            </div>
-          </form>
-        </mat-step>
-        <mat-step [stepControl]="fourthFormGroup">
-          <form [formGroup]="fourthFormGroup">
-            <ng-template matStepLabel>Label</ng-template>
-            <div class="controles-t">
-              <label>
-                  <div><h1>{{this.firstFormGroup.get('topico').value}}</h1></div>
-                  <div>Público Alvo: {{this.firstFormGroup.get('publico_alvo').value}}</div>
-                  <p *ngIf="this.firstFormGroup.get('publico_alvo').value == 0">Discentes</p>
-              </label>
-            </div><br/>
-            <div>
-              <button mat-button matStepperPrevious>Voltar</button>
-              <button mat-button matStepperNext>Próximo</button>
-            </div>
-          </form>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Concluir</ng-template>
-          Deseja concluir?
-          <div class="padding4">
-            <button mat-button type="submit" (click)="onSubmit()">Salvar</button>
-            <button mat-button matStepperPrevious>Voltar</button>
-            <button mat-button (click)="stepper.reset()">Cancelar</button>
-          </div>
-        </mat-step>
-      </mat-horizontal-stepper>
-    </div>
-    </mat-grid-tile>
-  </mat-grid-list>
-</mat-card> -->
 
 <!--
 -----------------------------------------------------------------------------

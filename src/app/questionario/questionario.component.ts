@@ -67,4 +67,7 @@ export class QuestionarioComponent implements OnInit {
     {value: '2', viewValue: 'Texto Longo'}
   ];
 
+
+  
+
 }
