@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormArray } from '@angular/forms'; //FormArray
+import { FormArray } from '@angular/forms';
 
 export interface Publico {
   value: string;
   viewValue: string;
 }
 
-export interface Resposta{
+export interface Resposta {
   value: string;
   viewValue: string;
 }
@@ -21,38 +21,40 @@ export interface Resposta{
 })
 export class AdminComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder) { } 
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.firstFormGroup = this.formBuilder.group({ 
+    this.firstFormGroup = this.formBuilder.group({
       $key: ['0'],
       titulo: ['', Validators.required],
       questionarios: [''],
       periodo: ['', Validators.required],
-      ativo: [true],
-      terminado: [false],    
-      data_ativacao:  [''],
-      data_limite:  ['', Validators.required],
-      observacao:  ['', Validators.required],    
+      ativo: [false],
+      terminado: [false],
+      data_ativacao: [''],
+      data_limite: ['', Validators.required],
+      observacao: ['', Validators.required],
       publico_alvo: ['', Validators.required]
     });
 
     this.orderForm = this.formBuilder.group({
       topico: ['', Validators.required],
       publico_alvo: ['', Validators.required],
-      por_disciplina:  [true],
-      tipo_resposta:  ['', Validators.required],
-      possiveis_respostas: [''],
-      questoes:  ['', Validators.required],
+      por_disciplina: [false],
+      tipo_resposta: ['', Validators.required],     
       labels_respostas: [''],
-      items: this.formBuilder.array([ this.createItem() ])
+      possiveis_respostas: [''],      
+      questoes: [''],
+      valQuest: this.formBuilder.array([this.createQuest()]),
+      valResp: this.formBuilder.array([this.createValResp()])
     });
   }
 
 
   //---------------------------------------------- FORMARRAY E FORMGROUP
   orderForm: FormGroup; //FormArray
-  items: FormArray; //FormArray
+  valQuest: FormArray; //FormArray
+  valResp: FormArray; //FormArray
 
   //Layout - Stepper
   firstFormGroup: FormGroup;
@@ -63,37 +65,53 @@ export class AdminComponent implements OnInit {
   date = new FormControl(new Date());
   serializedDate = new FormControl((new Date()).toISOString());
 
-  step = 0; //Layout - Expansion Panel
+  //step = 0; //Layout - Expansion Panel
+  //panelOpenState = false; //Layout - Expansion Panel
 
 
 
   //---------------------------------------------- ARRAYS
   //Layout - List - Publicos
   tipoPublicos: Publico[] = [
-    {value: '0', viewValue: 'Discentes'},
-    {value: '1', viewValue: 'Docentes'},
-    {value: '2', viewValue: 'Técnicos'}
-  ]; 
+    { value: '0', viewValue: 'Discentes' },
+    { value: '1', viewValue: 'Docentes' },
+    { value: '2', viewValue: 'Técnicos' }
+  ];
 
   //Layout - List - Respostas
   tipoRespostas: Resposta[] = [
-    {value: '0', viewValue: 'Objetiva'}, 
-    {value: '1', viewValue: 'Texto Curto'}, 
-    {value: '2', viewValue: 'Texto Longo'}
+    { value: '0', viewValue: 'Objetiva' },
+    { value: '1', viewValue: 'Texto Curto' },
+    { value: '2', viewValue: 'Texto Longo' }
   ];
 
-  
+
 
   //---------------------------------------------- AÇÕES
-  createItem(): FormGroup {
+  createQuest(): FormGroup {
     return this.formBuilder.group({
       questoes: ''
     });
   }
 
-  addItem(): void {
-    this.items = this.orderForm.get('items') as FormArray;
-    this.items.push(this.createItem());
+  createValResp(): FormGroup {
+    return this.formBuilder.group({
+      labels_respostas: '',
+      possiveis_respostas: ''
+    });
+  }
+
+
+
+  //---------------------------------------------- AÇÕES
+  addQuest(): void {
+    this.valQuest = this.orderForm.get('valQuest') as FormArray;
+    this.valQuest.push(this.createQuest());
+  }
+
+  addValResp(): void {
+    this.valResp = this.orderForm.get('valResp') as FormArray;
+    this.valResp.push(this.createValResp());
   }
 
   onSubmit() {
@@ -101,5 +119,6 @@ export class AdminComponent implements OnInit {
 
     console.log(this.firstFormGroup.value);
   }
+
 
 }

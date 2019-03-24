@@ -16,8 +16,8 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 import {AdminService} from './admin/admin.service';
 import {ReactiveFormsModule} from '@angular/forms';
 import { AppService } from './app.service';
-import { QuestionarioComponent } from './questionario/questionario.component';
 import { routing } from './app.routing';
+import { FlexLayoutModule } from  '@angular/flex-layout' ;
 
 import {
   MatAutocompleteModule,
@@ -60,8 +60,7 @@ import {
 @NgModule({
   declarations: [
     AppComponent,
-    AdminComponent,
-    QuestionarioComponent
+    AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -110,6 +109,7 @@ import {
     MatTreeModule,
     ScrollingModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
   ],
   providers: [AdminService, AppService],
   bootstrap: [AppComponent]
