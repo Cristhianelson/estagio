@@ -50,8 +50,25 @@ table {
 
 button {
   margin: 16px 8px;
+  margin: auto;
+  display: flex;
 }
 
 .padding1{
   margin-top: 20px;
 }
+
+/*//Layout - Expansion Panel
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-form-field {
+  margin-right: 12px;
+}*/

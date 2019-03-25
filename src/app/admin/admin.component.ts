@@ -104,6 +104,18 @@ export class AdminComponent implements OnInit {
 
 
   //---------------------------------------------- AÇÕES
+  /*setStep(index: number) {//Layout - Expansion Panel
+    this.step = index;
+  }
+
+  nextStep() {//Layout - Expansion Panel
+    this.step++;
+  }
+
+  prevStep() {//Layout - Expansion Panel
+    this.step--;
+  }*/
+
   addQuest(): void {
     this.valQuest = this.orderForm.get('valQuest') as FormArray;
     this.valQuest.push(this.createQuest());

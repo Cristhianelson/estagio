@@ -1,3 +1,44 @@
+<!--
+  <mat-accordion class="example-headers-align"> <!-- Expansion Panel 
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Avaliação
+          </mat-panel-title>
+        </mat-expansion-panel-header><!-- Conteudo   
+    
+        <mat-action-row>
+          <button mat-button color="primary" (click)="nextStep()">Próximo</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    
+      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Questionário
+          </mat-panel-title>
+        </mat-expansion-panel-header><!-- Conteudo 
+    
+        <mat-action-row>
+          <button mat-button color="warn" (click)="prevStep()">Voltar</button>
+          <button mat-button color="primary" (click)="nextStep()">Próximo</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    
+      <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Breve Resultado
+          </mat-panel-title>
+        </mat-expansion-panel-header><!-- Conteudo 
+    
+        <mat-action-row>
+          <button mat-button color="warn" (click)="prevStep()">Voltar</button>
+          <button mat-button color="primary" (click)="nextStep()">Finalizar</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion><!-- Expansion Panel 
+-->
 <div class="container">
   <!-- container -->
   <mat-card class="cardprincipal">
@@ -131,12 +172,13 @@ module.exports = mongoose.model('Avaliacao', AvaliacaoSchema);
                   <!-- Valor de Reposta // -->
                   <input matInput placeholder="Valor/Reposta" formControlName="possiveis_respostas">
                 </mat-form-field> <!-- Valor de Reposta // -->
-                <button mat-mini-fab type="submit" (click)="addValResp()">
-                  <mat-icon aria-label="Example icon-button with a add icon">add</mat-icon>
-                </button>
+
               </div>
             </div>
           </div>
+          <button mat-mini-fab type="submit" (click)="addValResp()">
+            <mat-icon aria-label="Example icon-button with a add icon">add</mat-icon>
+          </button>
         </mat-expansion-panel>
         <!--Expansion Panel -->
       </mat-accordion>
@@ -166,21 +208,45 @@ module.exports = mongoose.model('Avaliacao', AvaliacaoSchema);
                   <!-- Questão // -->
                   <input matInput placeholder="Questão" formControlName="questoes">
                 </mat-form-field>
-                <button mat-mini-fab type="submit" (click)="addQuest()">
-                  <mat-icon aria-label="Example icon-button with a add icon">add</mat-icon>
-                </button>
               </div>
             </div>
           </div>
+          <button mat-mini-fab type="submit" (click)="addQuest()">
+            <mat-icon aria-label="Example icon-button with a add icon">add</mat-icon>
+          </button>
         </mat-expansion-panel>
         <!--Expansion Panel -->
       </mat-accordion>
+
+
 
       <mat-card-actions>
         <button mat-button type="submit">Salvar</button>
       </mat-card-actions>
     </form>
   </mat-card>
+
+  <!--
+-----------------------------------------------------------------------------
+
+var mongoose = require('mongoose');
+var Schema   = mongoose.Schema;
+var Questao  = require('./QuestaoModel.js');
+
+var QuestionarioSchema = new Schema({
+  'topico' : String,
+  'publico_alvo' : Number,
+  'por_disciplina': Boolean,
+  'tipo_resposta' : Number,
+  'questoes': [ Questao.schema ],
+  'possiveis_respostas': [ Schema.Types.Mixed ],
+  'labels_respostas': [ String ],
+});
+
+module.exports = mongoose.model('Questionario', QuestionarioSchema);
+
+-----------------------------------------------------------------------------
+-->
 
   <div class="cardprincipal">
     <form [formGroup]="orderForm">
@@ -205,24 +271,3 @@ module.exports = mongoose.model('Avaliacao', AvaliacaoSchema);
     </form>
   </div>
 </div><!-- container -->
-<!--
------------------------------------------------------------------------------
-
-var mongoose = require('mongoose');
-var Schema   = mongoose.Schema;
-var Questao  = require('./QuestaoModel.js');
-
-var QuestionarioSchema = new Schema({
-  'topico' : String,
-  'publico_alvo' : Number,
-  'por_disciplina': Boolean,
-  'tipo_resposta' : Number,
-  'questoes': [ Questao.schema ],
-  'possiveis_respostas': [ Schema.Types.Mixed ],
-  'labels_respostas': [ String ],
-});
-
-module.exports = mongoose.model('Questionario', QuestionarioSchema);
-
------------------------------------------------------------------------------
--->
