@@ -65,8 +65,8 @@ export class AdminComponent implements OnInit {
   date = new FormControl(new Date());
   serializedDate = new FormControl((new Date()).toISOString());
 
-  //step = 0; //Layout - Expansion Panel
-  //panelOpenState = false; //Layout - Expansion Panel
+  step = 0; //Layout - Expansion Panel
+  panelOpenState = false; //Layout - Expansion Panel
 
 
 
@@ -104,7 +104,7 @@ export class AdminComponent implements OnInit {
  
 
   //---------------------------------------------- AÇÕES
-  /*setStep(index: number) {//Layout - Expansion Panel
+  setStep(index: number) {//Layout - Expansion Panel
     this.step = index;
   }
 
@@ -114,7 +114,7 @@ export class AdminComponent implements OnInit {
 
   prevStep() {//Layout - Expansion Panel
     this.step--;
-  }*/
+  }
 
   addQuest(): void {//Adicionar novos campos de questões
     this.valQuest = this.questForm.get('valQuest') as FormArray;
@@ -139,6 +139,7 @@ export class AdminComponent implements OnInit {
       observacao
     }
     console.log(this.avaliacao);
+    this.step++;
   }
 
   saveQuest() {
@@ -152,7 +153,7 @@ export class AdminComponent implements OnInit {
       respostas: valResp.map(p => p.possiveis_respostas),
       labels: valResp.map(v => v.labels_respostas)
     }
-    this.questForm.reset()
+    this.questForm.reset();
     console.log(this.questionarios);
   }
 

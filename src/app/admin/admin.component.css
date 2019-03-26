@@ -48,7 +48,7 @@ table {
   width: 100%;
 }
 
-button {
+.buttonClicks {
   margin: 16px 8px;
   margin: auto;
   display: flex;
@@ -58,7 +58,7 @@ button {
   margin-top: 20px;
 }
 
-/*//Layout - Expansion Panel
+/*Layout - Expansion Panel*/
 .example-headers-align .mat-expansion-panel-header-title,
 .example-headers-align .mat-expansion-panel-header-description {
   flex-basis: 0;
@@ -71,4 +71,4 @@ button {
 
 mat-form-field {
   margin-right: 12px;
-}*/
+}
