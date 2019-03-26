@@ -5,7 +5,7 @@
           <mat-panel-title>
             Avaliação
           </mat-panel-title>
-        </mat-expansion-panel-header><!-- Conteudo   
+        </mat-expansion-panel-header><!-- Avaliação  
     
         <mat-action-row>
           <button mat-button color="primary" (click)="nextStep()">Próximo</button>
@@ -17,7 +17,7 @@
           <mat-panel-title>
             Questionário
           </mat-panel-title>
-        </mat-expansion-panel-header><!-- Conteudo 
+        </mat-expansion-panel-header><!-- Questionário 
     
         <mat-action-row>
           <button mat-button color="warn" (click)="prevStep()">Voltar</button>
@@ -44,7 +44,7 @@
   <mat-card class="cardprincipal">
     <!-- Layout - Card -->
     <mat-card-title>Avaliação</mat-card-title>
-    <form [formGroup]="firstFormGroup" class="form">
+    <form [formGroup]="avalFormGroup" class="form">
 
       <mat-form-field class="full-width">
         <!-- Título //-->
@@ -70,7 +70,7 @@
 
       <mat-form-field class="full-width">
         <!-- Observação -->
-        <textarea matInput placeholder="Observações" formControlName="observacao" required> </textarea>
+        <textarea matInput placeholder="Observações" formControlName="observacao"> </textarea>
       </mat-form-field> <!-- Observação --> <br /><br />
 
       <div>
@@ -90,12 +90,12 @@
       </mat-form-field> <!-- Data Limite -->
 
       <mat-card-actions>
-        <button mat-button type="submit">Finalizar</button>
+        <button mat-button type="submit" (click)="saveAval()">Concluir</button>
       </mat-card-actions>
     </form>
   </mat-card> <!-- Layout - Card -->
 
-  <!--
+<!--
 -----------------------------------------------------------------------------
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
@@ -116,7 +116,6 @@ var AvaliacaoSchema = new Schema({
 });
 
 module.exports = mongoose.model('Avaliacao', AvaliacaoSchema);
-
 -----------------------------------------------------------------------------
 -->
 
@@ -124,7 +123,7 @@ module.exports = mongoose.model('Avaliacao', AvaliacaoSchema);
   <mat-card class="cardprincipal">
     <!-- Layout - Card -->
     <mat-card-title>Questionários</mat-card-title>
-    <form [formGroup]="orderForm" class="form">
+    <form [formGroup]="questForm" class="form">
 
       <mat-form-field class="full-width">
         <!-- Tópico // -->
@@ -152,7 +151,7 @@ module.exports = mongoose.model('Avaliacao', AvaliacaoSchema);
       </div><!-- Típo de resposta -->
 
       <!--  Possiveis respostas -->
-      <mat-accordion *ngIf="this.orderForm.value.tipo_resposta == '0'">
+      <mat-accordion *ngIf="this.questForm.value.tipo_resposta == '0'">
         <!--Expansion Panel -->
         <mat-expansion-panel>
           <!--Expansion Panel -->
@@ -161,7 +160,7 @@ module.exports = mongoose.model('Avaliacao', AvaliacaoSchema);
               Possiveis Respostas
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <div *ngFor="let item of orderForm.get('valResp').controls; let i = index;">
+          <div *ngFor="let item of questForm.get('valResp').controls; let i = index;">
             <div formArrayName="valResp">
               <div [formGroupName]="i">
                 <mat-form-field>
@@ -192,7 +191,7 @@ module.exports = mongoose.model('Avaliacao', AvaliacaoSchema);
       <br /><br />
 
       <!--  Possiveis Questão -->
-      <mat-accordion *ngIf="this.orderForm.value.por_disciplina == '0'">
+      <mat-accordion *ngIf="this.questForm.value.por_disciplina == '0'">
         <!--Expansion Panel -->
         <mat-expansion-panel>
           <!--Expansion Panel -->
@@ -201,7 +200,7 @@ module.exports = mongoose.model('Avaliacao', AvaliacaoSchema);
               Questões
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <div *ngFor="let item of orderForm.get('valQuest').controls; let i = index;">
+          <div *ngFor="let item of questForm.get('valQuest').controls; let i = index;">
             <div formArrayName="valQuest">
               <div [formGroupName]="i">
                 <mat-form-field class="full-width">
@@ -221,14 +220,13 @@ module.exports = mongoose.model('Avaliacao', AvaliacaoSchema);
 
 
       <mat-card-actions>
-        <button mat-button type="submit">Salvar</button>
+        <button mat-button type="submit" (click)="saveQuest()">Salvar</button>
       </mat-card-actions>
     </form>
   </mat-card>
 
   <!--
 -----------------------------------------------------------------------------
-
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 var Questao  = require('./QuestaoModel.js');
@@ -244,30 +242,5 @@ var QuestionarioSchema = new Schema({
 });
 
 module.exports = mongoose.model('Questionario', QuestionarioSchema);
-
 -----------------------------------------------------------------------------
 -->
-
-  <div class="cardprincipal">
-    <form [formGroup]="orderForm">
-      <!--<mat-card *ngFor="let item of orderForm.get('items').controls; let i = index;" class="padding1">
-        <div>
-          <div>
-            Tópico:<h1>{{ orderForm.controls.topico.value }}</h1>
-          </div>
-
-
-          <div formArrayName="items">
-            <div [formGroupName]="i">
-              <mat-form-field class="full-width">
-                
-                <input matInput placeholder="Questão" formControlName="questoes" required>
-              </mat-form-field>
-            </div>
-          </div>
-
-        </div>
-      </mat-card>-->
-    </form>
-  </div>
-</div><!-- container -->

@@ -20,11 +20,12 @@ export interface Resposta {
   providers: []
 })
 export class AdminComponent implements OnInit {
-
+  avaliacao = null;
+  questionarios = null;
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.firstFormGroup = this.formBuilder.group({
+    this.avalFormGroup = this.formBuilder.group({
       $key: ['0'],
       titulo: ['', Validators.required],
       questionarios: [''],
@@ -33,11 +34,11 @@ export class AdminComponent implements OnInit {
       terminado: [false],
       data_ativacao: [''],
       data_limite: ['', Validators.required],
-      observacao: ['', Validators.required],
+      observacao: [''],
       publico_alvo: ['', Validators.required]
     });
 
-    this.orderForm = this.formBuilder.group({
+    this.questForm = this.formBuilder.group({
       topico: ['', Validators.required],
       publico_alvo: ['', Validators.required],
       por_disciplina: [false],
@@ -52,12 +53,11 @@ export class AdminComponent implements OnInit {
 
 
   //---------------------------------------------- FORMARRAY E FORMGROUP
-  orderForm: FormGroup; //FormArray
+  avalFormGroup: FormGroup; //FormGroup
+  questForm: FormGroup; //FormGroup
   valQuest: FormArray; //FormArray
   valResp: FormArray; //FormArray
-
-  //Layout - Stepper
-  firstFormGroup: FormGroup;
+  
 
 
 
@@ -101,7 +101,7 @@ export class AdminComponent implements OnInit {
     });
   }
 
-
+ 
 
   //---------------------------------------------- AÇÕES
   /*setStep(index: number) {//Layout - Expansion Panel
@@ -116,20 +116,44 @@ export class AdminComponent implements OnInit {
     this.step--;
   }*/
 
-  addQuest(): void {
-    this.valQuest = this.orderForm.get('valQuest') as FormArray;
-    this.valQuest.push(this.createQuest());
+  addQuest(): void {//Adicionar novos campos de questões
+    this.valQuest = this.questForm.get('valQuest') as FormArray;
+    this.valQuest.push(this.createQuest());   
   }
 
-  addValResp(): void {
-    this.valResp = this.orderForm.get('valResp') as FormArray;
+  addValResp(): void {//Adicionar novos campos de possiveis respostas
+    this.valResp = this.questForm.get('valResp') as FormArray;
     this.valResp.push(this.createValResp());
   }
 
-  onSubmit() {
-    alert(JSON.stringify(this.firstFormGroup.value));
+  saveAval() {
+    const {periodo, ativo, terminado, data_ativacao, data_limite, titulo, publico_alvo, observacao} = this.avalFormGroup.value;
+    this.avaliacao = {
+      periodo,
+      ativo,
+      terminado,
+      data_ativacao,
+      data_limite, 
+      titulo, 
+      publico_alvo, 
+      observacao
+    }
+    console.log(this.avaliacao);
+  }
 
-    console.log(this.firstFormGroup.value);
+  saveQuest() {
+    const {topico, publico_alvo, por_disciplina, tipo_resposta, valQuest, valResp} = this.questForm.value;
+    this.questionarios = {
+      topico,
+      publico_alvo,
+      por_disciplina,
+      tipo_resposta,
+      questoes: valQuest.map(vq => vq.questoes),
+      respostas: valResp.map(p => p.possiveis_respostas),
+      labels: valResp.map(v => v.labels_respostas)
+    }
+    this.questForm.reset()
+    console.log(this.questionarios);
   }
 
 
