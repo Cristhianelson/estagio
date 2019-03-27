@@ -215,7 +215,7 @@
     <mat-action-row>
       <button mat-button color="warn" (click)="prevStep()">Voltar</button>
       <button mat-button color="accent" type="submit" (click)="saveQuest()">Acrescentar</button>
-      <button mat-button color="primary" (click)="nextStep()">Próximo</button>
+      <button mat-button color="primary" (click)="finalizandoStep()">Próximo</button>
     </mat-action-row>
   </mat-expansion-panel>
 
@@ -242,7 +242,11 @@
                 {{f.topico}}
               </mat-panel-title>
             </mat-expansion-panel-header><!-- Conteudo -->
-            <p>{{f.questoes}}</p>
+
+            <mat-list role="list">
+              <mat-list-item role="listitem">{{f.questoes}}</mat-list-item>
+            </mat-list>
+
           </mat-expansion-panel>
         </mat-accordion>
       </div>

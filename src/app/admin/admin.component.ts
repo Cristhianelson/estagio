@@ -120,7 +120,7 @@ export class AdminComponent implements OnInit {
   }
 
 
-  
+
   //---------------------------------------------- AÇÕES
   addQuest(): void {//Adicionar novos campos de questões
     this.valQuest = this.questForm.get('valQuest') as FormArray
@@ -167,7 +167,11 @@ export class AdminComponent implements OnInit {
     let zeraValQues = this.questForm.get('valQuest') as FormArray
     while (zeraValQues.length > 1) zeraValQues.removeAt(0)
     
-    console.log(this.questionarios);
+  }
+
+  finalizandoStep() {
+    console.log(this.questionarios)
+    this.step++
   }
 
   getData() {
