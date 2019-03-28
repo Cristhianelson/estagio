@@ -244,7 +244,9 @@
             </mat-expansion-panel-header><!-- Conteudo -->
 
             <mat-list role="list">
-              <mat-list-item role="listitem">{{f.questoes}}</mat-list-item>
+              <mat-list-item role="listitem" *ngFor="let questao of f.questoes">
+                {{questao}}
+              </mat-list-item>
             </mat-list>
 
           </mat-expansion-panel>

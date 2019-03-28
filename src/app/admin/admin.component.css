@@ -72,3 +72,7 @@ table {
 mat-form-field {
   margin-right: 12px;
 }
+
+.menuBotoes{
+  float: right;
+}

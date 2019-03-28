@@ -1,7 +1,5 @@
-import { FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormArray } from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 export interface Publico {
   value: string;
@@ -159,7 +157,9 @@ export class AdminComponent implements OnInit {
       respostas: valResp.map(p => p.possiveis_respostas),
       labels: valResp.map(v => v.labels_respostas)
     })
+    
     this.questForm.reset()
+    this.questForm.get('por_disciplina').setValue(false)
 
     let zeraValResp = this.questForm.get('valResp') as FormArray
     while (zeraValResp.length > 1) zeraValResp.removeAt(0)
