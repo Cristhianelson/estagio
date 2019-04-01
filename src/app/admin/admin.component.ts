@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 export interface Publico {
@@ -117,8 +117,6 @@ export class AdminComponent implements OnInit {
     this.step--
   }
 
-
-
   //---------------------------------------------- AÇÕES
   addQuest(): void {//Adicionar novos campos de questões
     this.valQuest = this.questForm.get('valQuest') as FormArray
@@ -157,7 +155,7 @@ export class AdminComponent implements OnInit {
       respostas: valResp.map(p => p.possiveis_respostas),
       labels: valResp.map(v => v.labels_respostas)
     })
-    
+
     this.questForm.reset()
     this.questForm.get('por_disciplina').setValue(false)
 
@@ -177,5 +175,16 @@ export class AdminComponent implements OnInit {
   getData() {
     return this.questionarios
   }
+
+  delQuest(questoes){
+    console.log(questoes)
+
+    for(var i=0; i < this.questionarios.length; i++){
+      if(this.questionarios[i]["questoes"] == questoes){
+        this.questionarios.splice(i, 1)
+      }
+    }
+  }
+  
 
 }

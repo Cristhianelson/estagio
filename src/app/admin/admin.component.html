@@ -137,11 +137,11 @@
                 <div [formGroupName]="i">
                   <mat-form-field>
                     <!-- labels_respostas -->
-                    <input matInput placeholder="Descrição" formControlName="labels_respostas">
+                    <input matInput placeholder="Valor/Reposta" formControlName="possiveis_respostas">
                   </mat-form-field> <!-- Possiveis respostas -->
                   <mat-form-field class="slide-toggle">
                     <!-- Valor de Reposta // -->
-                    <input matInput placeholder="Valor/Reposta" formControlName="possiveis_respostas">
+                    <input matInput placeholder="Descrição" formControlName="labels_respostas">
                   </mat-form-field> <!-- Valor de Reposta // -->
 
                 </div>
@@ -245,14 +245,20 @@
 
             <mat-list role="list">
               <mat-list-item role="listitem" *ngFor="let questao of f.questoes">
-                {{questao}}
+
+                <div class="">
+                  {{questao}}
+                </div>
+                <div class="menuBotoes">
+                  <button mat-button>Alterar</button>
+                  <button mat-button color="warn" (click)="delQuest(questao)">Apagar</button>
+                </div>
               </mat-list-item>
             </mat-list>
 
           </mat-expansion-panel>
         </mat-accordion>
       </div>
-
     </mat-card>
 
     <mat-action-row>
