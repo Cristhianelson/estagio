@@ -25,6 +25,8 @@
   max-width: 95%;
   width: 100%;
   align-items: center;
+  margin: auto;
+  margin-top: 1px;
 }
 
 .full-width {

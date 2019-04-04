@@ -1,27 +1,23 @@
-<mat-accordion class="example-headers-align container">
-  <!-- Expansion Panel -->
-  <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Avaliação
-      </mat-panel-title>
-    </mat-expansion-panel-header><!-- Avaliação  -->
+<mat-accordion class="example-headers-align">
+  <form [formGroup]="formulario" class="form">
 
-    <div class="container">
-      <!-- container -->
-
-      <!-- Layout - Card -->
-      <form [formGroup]="formulario" class="form">
-
+    <!-- Expansion Panel -->
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Avaliação
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <!-------------------------------------- Avaliação -------------------------------------->
+      <div class="container">
         <mat-form-field class="full-width">
           <!-- Título //-->
-          <input matInput placeholder="Título" formControlName="titulo" required>
+          <input matInput placeholder="Título" formControlName="titulo" required autocomplete="off">
         </mat-form-field> <!-- Título //-->
-
         <div>
           <mat-form-field class="width-10">
             <!-- Período -->
-            <input matInput placeholder="Período" formControlName="periodo" required>
+            <input matInput placeholder="Período" formControlName="periodo" autocomplete="off" required>
           </mat-form-field> <!-- Período a -->
 
           <label class="slide-toggle">
@@ -55,353 +51,151 @@
           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
           <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field> <!-- Data Limite -->
-      </form>
-      <!--
-        -----------------------------------------------------------------------------
-        var mongoose = require('mongoose');
-        var Schema   = mongoose.Schema;
-        var Questionario = require('./QuestionarioModel');
-  
-        var AvaliacaoSchema = new Schema({
-          'periodo' : Number,
-          'questionarios' : [ Questionario.schema ],
-          'ativo' : Boolean,
-          'terminado' : Boolean,
-          'data_ativacao' : Date,
-          'data_limite' : Date,
-          'public_alvo' : [ Number ],
-          'titulo' : String,
-          'observacao' : String,
-          'participantes': [{ 
-            'participante': Schema.Types.ObjectId, 'tipo_participante': Number }],
-        });
-  
-        module.exports = mongoose.model('Avaliacao', AvaliacaoSchema);
-        -----------------------------------------------------------------------------
-        -->
-    </div>
-
-    <mat-action-row>
-      <button mat-button color="primary" (click)="saveAval()">Próximo</button>
-    </mat-action-row>
-  </mat-expansion-panel>
-
-  <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Questionário
-      </mat-panel-title>
-    </mat-expansion-panel-header><!-- Questionário -->
-
-    <div class="container">
-
-      <form [formGroup]="questForm" class="form">
-
-        <mat-form-field class="full-width">
-          <!-- Tópico // -->
-          <input matInput placeholder="Tópico" formControlName="topico" required>
-        </mat-form-field> <!-- Tópico // --><br /><br />
-
-        <div>
-          <label>Público Alvo</label> <!-- Público Alvo -->
-          <mat-selection-list matInput #publicos formControlName="publico_alvo">
-            <mat-list-option *ngFor="let publico of tipoPublicos" [value]="publico.value">
-              {{publico.viewValue}}
-            </mat-list-option>
-          </mat-selection-list>
-        </div><!-- Público Alvo --><br />
-
-        <div>
-          <!-- Típo de resposta -->
-          <label id="radio-group-label">Escolha o típo de resposta desejado</label>
-          <mat-radio-group aria-labelledby="example-radio-group-label" class="radio-group"
-            formControlName="tipo_resposta">
-            <mat-radio-button class="radio-button" *ngFor="let tpresposta of tipoRespostas" [value]="tpresposta.value">
-              {{tpresposta.viewValue}}
-            </mat-radio-button>
-          </mat-radio-group>
-        </div><!-- Típo de resposta -->
-
-        <!--  Possiveis respostas -->
-        <mat-accordion *ngIf="this.questForm.value.tipo_resposta == '0'">
-          <!--Expansion Panel -->
-          <mat-expansion-panel>
-            <!--Expansion Panel -->
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Possiveis Respostas
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div *ngFor="let item of questForm.get('valResp').controls; let i = index;">
-              <div formArrayName="valResp">
-                <div [formGroupName]="i">
-                  <mat-form-field>
-                    <!-- labels_respostas -->
-                    <input matInput placeholder="Valor/Reposta" formControlName="possiveis_respostas">
-                  </mat-form-field> <!-- Possiveis respostas -->
-                  <mat-form-field class="slide-toggle">
-                    <!-- Valor de Reposta // -->
-                    <input matInput placeholder="Descrição" formControlName="labels_respostas">
-                  </mat-form-field> <!-- Valor de Reposta // -->
-
-                </div>
-              </div>
-            </div>
-            <button class="buttonClicks" mat-mini-fab type="submit" (click)="addValResp()">
-              <mat-icon aria-label="Example icon-button with a add icon">add</mat-icon>
-            </button>
-          </mat-expansion-panel>
-          <!--Expansion Panel -->
-        </mat-accordion>
-        <br />
-
-        <label>
-          <!-- Por disciplina -->
-          <mat-slide-toggle formControlName="por_disciplina" class="margin">Por disciplina</mat-slide-toggle>
-        </label> <!-- Por disciplina -->
-
-        <br /><br />
-
-        <!--  Possiveis Questão -->
-        <mat-accordion *ngIf="this.questForm.value.por_disciplina == '0'">
-          <!--Expansion Panel -->
-          <mat-expansion-panel>
-            <!--Expansion Panel -->
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Questões
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div *ngFor="let item of questForm.get('valQuest').controls; let i = index;">
-              <div formArrayName="valQuest">
-                <div [formGroupName]="i">
-                  <mat-form-field class="full-width">
-                    <!-- Questão // -->
-                    <input matInput placeholder="Questão" formControlName="questoes">
-                  </mat-form-field>
-                </div>
-              </div>
-            </div>
-            <button class="buttonClicks" mat-mini-fab type="submit" (click)="addQuest()">
-              <mat-icon aria-label="Example icon-button with a add icon">add</mat-icon>
-            </button>
-          </mat-expansion-panel>
-          <!--Expansion Panel -->
-        </mat-accordion>
-      </form>
-
-      <!--
-        -----------------------------------------------------------------------------
-        var mongoose = require('mongoose');
-        var Schema   = mongoose.Schema;
-        var Questao  = require('./QuestaoModel.js');
-        
-        var QuestionarioSchema = new Schema({
-          'topico' : String,
-          'publico_alvo' : Number,
-          'por_disciplina': Boolean,
-          'tipo_resposta' : Number,
-          'questoes': [ Questao.schema ],
-          'possiveis_respostas': [ Schema.Types.Mixed ],
-          'labels_respostas': [ String ],
-        });
-        
-        module.exports = mongoose.model('Questionario', QuestionarioSchema);
-        -----------------------------------------------------------------------------
-        -->
-
-
-    </div>
-
-    <mat-action-row>
-      <button mat-button color="warn" (click)="prevStep()">Voltar</button>
-      <button mat-button color="accent" type="submit" (click)="saveQuest()">Acrescentar</button>
-      <button mat-button color="primary" (click)="finalizandoStep()">Próximo</button>
-    </mat-action-row>
-  </mat-expansion-panel>
-
-  <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Breve Resultado
-      </mat-panel-title>
-    </mat-expansion-panel-header><!-- Conteudo -->
-
-    <mat-card>
-      <div class="cardprincipal">
-        <h3>{{this.formulario.get('titulo').value}}</h3>
-        <p>Data limite: {{this.formulario.get('data_limite').value}} - Referente ao período:
-          {{this.formulario.get('periodo').value}}</p>
-        <p>Observações: {{this.formulario.get('observacao').value}}</p>
       </div>
+      <!-------------------------------------- Avaliação -------------------------------------->
+      <mat-action-row>
+        <button mat-button color="primary" (click)="saveAval()">Próximo</button>
+      </mat-action-row>
+    </mat-expansion-panel>
 
-      <!-- <div formArrayName="questionariosArray">
-      <div class="cardprincipal" *ngFor="let q of questionarios; let i = index; let dados = value">
-        <h3>{{i+1}} - {{topico}}</h3>
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Questionário
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <!-------------------------------------- Questionário -------------------------------------->
+      <div class="container">
+        <div formGroupName="questionarios">
 
-        <div *ngFor="let item of formulario.get('questionariosArray').controls; let j = index;">
-          
-            <form [formGroupName]="j">
-              <mat-form-field class="full-width">                
-                <input matInput placeholder="Tópico" formControlName="topico" required>
-              </mat-form-field> <br /><br />
+          <mat-form-field class="full-width">
+            <!-- Tópico // -->
+            <input matInput type="text" placeholder="Tópico" formControlName="topico" value="" autocomplete="off"
+              required>
+          </mat-form-field> <!-- Tópico // --><br /><br />
+          <div>
+            <!-- Público Alvo -->
+            <label>Público Alvo</label>
+            <mat-selection-list matInput #publicos formControlName="publico_alvo">
+              <mat-list-option *ngFor="let publico of tipoPublicos" [value]="publico.value">
+                {{publico.viewValue}}
+              </mat-list-option>
+            </mat-selection-list>
+          </div><!-- Público Alvo --><br />
 
-            </form>
-          
+          <!-- Típo de resposta -->
+          <div>
+            <label id="radio-group-label">Escolha o típo de resposta desejado</label>
+            <mat-radio-group aria-labelledby="example-radio-group-label" class="radio-group"
+              formControlName="tipo_resposta">
+              <mat-radio-button class="radio-button" *ngFor="let tpresposta of tipoRespostas"
+                [value]="tpresposta.value">
+                {{tpresposta.viewValue}}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div><!-- Típo de resposta -->
+
+          <!--  Possiveis respostas -->
+          <mat-accordion *ngIf="this.formulario.controls.questionarios.value.tipo_resposta == '0'">
+            <!--Expansion Panel -->
+            <mat-expansion-panel>
+              <!--Expansion Panel -->
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Possiveis Respostas
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngFor="let item of this.formulario.controls.questionarios.get('valResp').controls; let i = index;">
+                <div formArrayName="valResp">
+                  <div [formGroupName]="i">
+                    <mat-form-field>
+                      <!-- labels_respostas -->
+                      <input matInput placeholder="Valor/Reposta" formControlName="possiveis_respostas">
+                    </mat-form-field> <!-- Possiveis respostas -->
+                    <mat-form-field class="slide-toggle">
+                      <!-- Valor de Reposta // -->
+                      <input matInput placeholder="Descrição" formControlName="labels_respostas">
+                    </mat-form-field> <!-- Valor de Reposta // -->
+
+                  </div>
+                </div>
+              </div>
+              <button class="buttonClicks" mat-mini-fab type="submit" (click)="addValResp()">
+                <mat-icon aria-label="Example icon-button with a add icon">add</mat-icon>
+              </button>
+            </mat-expansion-panel>
+            <!--Expansion Panel -->
+          </mat-accordion>
+          <br />
+
+          <!-- Por disciplina -->
+          <label>
+            <mat-slide-toggle formControlName="por_disciplina" class="margin">Por disciplina</mat-slide-toggle>
+          </label> <!-- Por disciplina -->
+          <br /><br />
+
+          <!--  Possiveis Questão -->
+          <mat-accordion *ngIf="this.formulario.controls.questionarios.value.por_disciplina == '0'">
+            <!--Expansion Panel -->
+            <mat-expansion-panel>
+              <!--Expansion Panel -->
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Questões
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngFor="let item of this.formulario.controls.questionarios.get('valQuest').controls; let i = index;">
+                <div formArrayName="valQuest">
+                  <div [formGroupName]="i">
+                    <mat-form-field class="full-width">
+                      <!-- Questão // -->
+                      <input matInput placeholder="Questão" formControlName="questoes">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <button class="buttonClicks" mat-mini-fab type="submit" (click)="addQuest()">
+                <mat-icon aria-label="Example icon-button with a add icon">add</mat-icon>
+              </button>
+            </mat-expansion-panel>
+            <!--Expansion Panel -->
+          </mat-accordion>
+        </div>
+      </div>
+      <!-------------------------------------- Questionário -------------------------------------->
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Voltar</button>
+        <button mat-button color="accent" type="submit" (click)="saveQuest()">Acrescentar</button>
+        <button mat-button color="primary" (click)="finalizandoStep()">Próximo</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Breve Resultado
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <!-------------------------------------- Conteudo -------------------------------------->
+      <mat-card>
+        <div class="cardprincipal">
+          <h3>{{this.formulario.get('titulo').value}}</h3>
+          <p>Data limite: {{this.formulario.get('data_limite').value}} - Referente ao período:
+            {{this.formulario.get('periodo').value}}</p>
+          <p>Observações: {{this.formulario.get('observacao').value}}</p>
         </div>
 
 
-        <mat-divider></mat-divider>
-      </div>
-    </div> -->
-
-      
 
 
-    </mat-card>
 
-    <mat-action-row>
-      <button mat-button color="warn" (click)="prevStep()">Voltar</button>
-      <button mat-button color="primary" (click)="nextStep()">Finalizar</button>
-    </mat-action-row>
-  </mat-expansion-panel>
+      </mat-card>
+      <!-------------------------------------- Conteudo -------------------------------------->
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Voltar</button>
+        <button mat-button color="primary" (click)="nextStep()">Finalizar</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+  </form>
 </mat-accordion><!-- Expansion Panel -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--
-
-<form [formGroup]="formulario" class="form">
-
-    <div class="container">
-
-      <div formGroupName="questionarios">
-
-        <mat-form-field class="full-width">
-           Tópico // 
-          <input matInput placeholder="Tópico" formControlName="topico" required>
-        </mat-form-field> <!-- Tópico // <br /><br />
-
-        <div>
-          <label>Público Alvo</label> <!-- Público Alvo 
-          <mat-selection-list matInput #publicos formControlName="publico_alvo">
-            <mat-list-option *ngFor="let publico of tipoPublicos" [value]="publico.value">
-              {{publico.viewValue}}
-            </mat-list-option>
-          </mat-selection-list>
-        </div><!-- Público Alvo <br />
-
-        <div>
-          <!-- Típo de resposta 
-          <label id="radio-group-label">Escolha o típo de resposta desejado</label>
-          <mat-radio-group aria-labelledby="example-radio-group-label" class="radio-group"
-          formControlName="tipo_resposta">
-            <mat-radio-button class="radio-button" *ngFor="let tpresposta of tipoRespostas" [value]="tpresposta.value">
-              {{tpresposta.viewValue}}
-            </mat-radio-button>
-          </mat-radio-group>
-        </div><!-- Típo de resposta 
-
-        <!--  Possiveis respostas 
-        <mat-accordion *ngIf="this.formulario.value.questionarios.tipo_resposta == '0'">
-          <!--Expansion Panel 
-          <mat-expansion-panel>
-            <!--Expansion Panel 
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Possiveis Respostas
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div *ngFor="let item of formulario.get('questionarios.valResp').controls; let i = index;">
-              <div formArrayName="questionarios.valResp">
-                <div [formGroupName]="i">
-                  <mat-form-field>
-                    <!-- labels_respostas 
-                    <input matInput placeholder="Valor/Reposta" formControlName="possiveis_respostas">
-                  </mat-form-field> <!-- Possiveis respostas 
-                  <mat-form-field class="slide-toggle">
-                    <!-- Valor de Reposta // 
-                    <input matInput placeholder="Descrição" formControlName="labels_respostas">
-                  </mat-form-field> <!-- Valor de Reposta //
-
-                </div>
-              </div>
-            </div>
-            <button class="buttonClicks" mat-mini-fab type="submit" (click)="addValResp()">
-              <mat-icon aria-label="Example icon-button with a add icon">add</mat-icon>
-            </button>
-          </mat-expansion-panel>
-          <!--Expansion Panel 
-        </mat-accordion>
-        <br />
-
-        <label>
-          <!-- Por disciplina 
-          <mat-slide-toggle formControlName="por_disciplina" class="margin">Por disciplina</mat-slide-toggle>
-        </label> <!-- Por disciplina 
-
-        <br /><br />
-
-        <!--  Possiveis Questão 
-        <mat-accordion *ngIf="this.formulario.value.questionarios.por_disciplina == '0'">
-          <!--Expansion Panel 
-          <mat-expansion-panel>
-            <!--Expansion Panel 
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Questões
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div *ngFor="let item of formulario.get('questionarios.valQuest').controls; let i = index;">
-              <div formArrayName="questionarios.valQuest">
-                <div [formGroupName]="i">
-                  <mat-form-field class="full-width">
-                    <!-- Questão // 
-                    <input matInput placeholder="Questão" formControlName="questoes">
-                  </mat-form-field>
-                </div>
-              </div>
-            </div>
-            <button class="buttonClicks" mat-mini-fab type="submit" (click)="addQuest()">
-              <mat-icon aria-label="Example icon-button with a add icon">add</mat-icon>
-            </button>
-          </mat-expansion-panel>
-          <!--Expansion Panel 
-        </mat-accordion>
-      </div>
-
-      
-      -----------------------------------------------------------------------------
-      var mongoose = require('mongoose');
-      var Schema   = mongoose.Schema;
-      var Questao  = require('./QuestaoModel.js');
-      
-      var QuestionarioSchema = new Schema({
-        'topico' : String,
-        'publico_alvo' : Number,
-        'por_disciplina': Boolean,
-        'tipo_resposta' : Number,
-        'questoes': [ Questao.schema ],
-        'possiveis_respostas': [ Schema.Types.Mixed ],
-        'labels_respostas': [ String ],
-      });
-      
-      module.exports = mongoose.model('Questionario', QuestionarioSchema);
-      -----------------------------------------------------------------------------
-     
-
-    </div>
-  </form> -->

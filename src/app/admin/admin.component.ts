@@ -18,35 +18,20 @@ export interface Resposta {
   providers: []
 })
 export class AdminComponent {
-  
-  questForm = this.fb.group({ 
-    topico: ['', Validators.required],
-    publico_alvo: ['', Validators.required],
-    por_disciplina: [false],
-    tipo_resposta: ['', Validators.required],     
-    labels_respostas: [''],
-    possiveis_respostas: [''],      
-    questoes: [''],
-    valQuest: this.fb.array([this.createQuest()]),
-    valResp: this.fb.array([this.createValResp()])
-  });
 
   formulario = this.fb.group({
     titulo: ['', Validators.required],
-    questionariosArray: this.fb.array([]), 
-    /*
-     questionarios: this.fb.group({
+    questionarios: this.fb.group({
       topico: ['', Validators.required],
       publico_alvo: ['', Validators.required],
       por_disciplina: [false],
-      tipo_resposta: ['', Validators.required],     
+      tipo_resposta: ['', Validators.required],
       labels_respostas: [''],
-      possiveis_respostas: [''],      
+      possiveis_respostas: [''],
       questoes: [''],
-      valQuest: this.fb.array([this.createQuest()]),
       valResp: this.fb.array([this.createValResp()]),
-    }), 
-    */
+      valQuest: this.fb.array([this.createQuest()]),
+    }),
     periodo: ['', Validators.required],
     ativo: [false],
     terminado: [false],
@@ -57,7 +42,7 @@ export class AdminComponent {
   });
 
   avaliacao = null;
-  questionarios = [];
+  questionario = [];
 
   constructor(private fb: FormBuilder) { }
 
@@ -65,12 +50,9 @@ export class AdminComponent {
   }
 
 
-  //---------------------------------------------- FORMARRAY
-  valQuest: FormArray //FormArray
+  //---------------------------------------------- FORMARRAY e VARIÁVEIS
   valResp: FormArray //FormArray
-  questionariosArray: FormArray //FormArray  
-
-  //---------------------------------------------- VARIÁVEIS
+  valQuest: FormArray //FormArray 
   date = new FormControl(new Date())
   serializedDate = new FormControl((new Date()).toISOString())
   step = 0 //Layout - Expansion Panel
@@ -78,84 +60,77 @@ export class AdminComponent {
 
   //---------------------------------------------- ARRAYS  
   tipoPublicos: Publico[] = [//Layout - List - Publicos
-    { value: '0', viewValue: 'Discentes' },{ value: '1', viewValue: 'Docentes' },{ value: '2', viewValue: 'Técnicos' }
-  ];  
+    { value: '0', viewValue: 'Discentes' }, { value: '1', viewValue: 'Docentes' }, { value: '2', viewValue: 'Técnicos' }
+  ];
   tipoRespostas: Resposta[] = [//Layout - List - Respostas
-    { value: '0', viewValue: 'Objetiva' },{ value: '1', viewValue: 'Texto Curto' },{ value: '2', viewValue: 'Texto Longo' }
+    { value: '0', viewValue: 'Objetiva' }, { value: '1', viewValue: 'Texto Curto' }, { value: '2', viewValue: 'Texto Longo' }
   ];
 
 
-
   //---------------------------------------------- AÇÕES
-  createQuest(): FormGroup {//Adicionar novos campos de questões
-    return this.fb.group({
-      questoes: ''
-    });
-  }
-
   createValResp(): FormGroup {//Adicionar novos campos de possiveis respostas
     return this.fb.group({
       labels_respostas: '',
       possiveis_respostas: ''
     });
   }
-
-  createQuestionario(questionario): FormGroup{
+  createQuest(): FormGroup {//Adicionar novos campos de questões
+    return this.fb.group({
+      questoes: ''
+    });
+  }
+  createQuestionario(questionario): FormGroup {//EM TESTE
     return this.fb.group({
       topico: [questionario.topico, Validators.required],
       publico_alvo: [questionario.publico_alvo, Validators.required],
       por_disciplina: [questionario.por_disciplina],
-      tipo_resposta: [questionario.tipo_resposta, Validators.required],     
+      tipo_resposta: [questionario.tipo_resposta, Validators.required],
       labels: [questionario.labels],
-      respostas: [questionario.respostas],   
+      respostas: [questionario.respostas],
       questoes: [questionario.questoes],
     });
   }
- 
 
-  //---------------------------------------------- AÇÕES
+  //---------------------------------------------- AÇÕES STEP
   setStep(index: number) {//Layout - Expansion Panel
     this.step = index
   }
-
   nextStep() {//Layout - Expansion Panel
     this.step++
   }
-
   prevStep() {//Layout - Expansion Panel
     this.step--
   }
-
-  //---------------------------------------------- AÇÕES
-  addQuest(): void {//Adicionar novos campos de questões
-    this.valQuest = this.questForm.get('valQuest') as FormArray
-    this.valQuest.push(this.createQuest())
-  }
-
-  addValResp(): void {//Adicionar novos campos de possiveis respostas
-    this.valResp = this.questForm.get('valResp') as FormArray
-    this.valResp.push(this.createValResp())
-  }
-  
   finalizandoStep() {
-    console.log(this.questionarios)
     
-    this.questionariosArray = this.formulario.get('questionariosArray') as FormArray
-    this.questionariosArray.push(this.createQuestionario(this.questionarios))
-    console.log(this.questionariosArray)
+    this.formulario.controls.questionarios = this.formulario.get('questionarios') as FormArray
+    //this.formulario.controls.questionarios.push(this.createQuestionario(this.formulario.controls.questionarios))
+
+    console.log(this.formulario.get('questionarios'))
     this.step++
   }
 
+  //---------------------------------------------- ADD CAMPOS
+  addValResp(): void {//Adicionar novos campos de possiveis respostas
+    this.valResp = this.formulario.controls.questionarios.get('valResp') as FormArray
+    this.valResp.push(this.createValResp())
+  }
+  addQuest(): void {//Adicionar novos campos de questões
+    this.valQuest = this.formulario.controls.questionarios.get('valQuest') as FormArray
+    this.valQuest.push(this.createQuest())
+  }
+
+
   saveAval() {
-    const {periodo, ativo, terminado, data_ativacao, data_limite, titulo, publico_alvo, observacao} = this.formulario.value;
+    const { periodo, ativo, terminado, data_ativacao, data_limite, titulo, publico_alvo, observacao } = this.formulario.value;
     this.avaliacao = {
       periodo,
       ativo,
       terminado,
       data_ativacao,
-      data_limite, 
-      titulo, 
-      publico_alvo, 
+      data_limite,
+      titulo,
+      publico_alvo,
       observacao
     }
     console.log(this.avaliacao)
@@ -163,8 +138,8 @@ export class AdminComponent {
   }
 
   saveQuest() {
-    const {topico, publico_alvo, por_disciplina, tipo_resposta, valQuest, valResp} = this.questForm.value;
-    this.questionarios.push({
+    const { topico, publico_alvo, por_disciplina, tipo_resposta, valQuest, valResp } = this.formulario.controls.questionarios.value;
+    this.questionario.push({
       topico,
       publico_alvo,
       por_disciplina,
@@ -173,35 +148,36 @@ export class AdminComponent {
       respostas: valResp.map(p => p.possiveis_respostas),
       labels: valResp.map(v => v.labels_respostas)
     })
-    this.questForm.reset()
-    this.questForm.get('por_disciplina').setValue(false)
+    this.formulario.controls.questionarios.reset()
+    this.formulario.controls.questionarios.get('por_disciplina').setValue(false)
 
-    let zeraValResp = this.questForm.get('valResp') as FormArray
+    let zeraValResp = this.formulario.controls.questionarios.get('valResp') as FormArray
     while (zeraValResp.length > 1) zeraValResp.removeAt(0)
 
-    let zeraValQues = this.questForm.get('valQuest') as FormArray
+    let zeraValQues = this.formulario.controls.questionarios.get('valQuest') as FormArray
     while (zeraValQues.length > 1) zeraValQues.removeAt(0)
-  }
 
+    console.log(this.questionario)
+  }
 
   //-----------------------------------------------------------------------------------------------------------------------------------
 
-  //Testes
+  /*
   getItems() {
-    for(var i=0; i < this.questionarios.length; i++){
+    for (var i = 0; i < this.questionarios.length; i++) {
       console.log(this.questionarios[i]["topico"])
     }
   }
 
-  delQuest(questoes){
+  delQuest(questoes) {
     console.log(questoes)
 
-    for(var i=0; i < this.questionarios.length; i++){
-      if(this.questionarios[i]["questoes"] == questoes){
+    for (var i = 0; i < this.questionarios.length; i++) {
+      if (this.questionarios[i]["questoes"] == questoes) {
         this.questionarios.splice(i, 1)
       }
     }
-  }
-  
+  }*/
+
 
 }
