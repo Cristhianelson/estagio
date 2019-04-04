@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 export interface Publico {
@@ -79,7 +79,7 @@ export class AdminComponent {
       questoes: ''
     });
   }
-  createQuestionario(questionario): FormGroup {//EM TESTE
+  createQuestionario(questionario): FormGroup {//DUVIDA AQUI
     return this.fb.group({
       topico: [questionario.topico, Validators.required],
       publico_alvo: [questionario.publico_alvo, Validators.required],
@@ -101,13 +101,15 @@ export class AdminComponent {
   prevStep() {//Layout - Expansion Panel
     this.step--
   }
-  finalizandoStep() {
-    
+  finalizandoStep() { //DUVIDA AQUI   
     this.formulario.controls.questionarios = this.formulario.get('questionarios') as FormArray
-    //this.formulario.controls.questionarios.push(this.createQuestionario(this.formulario.controls.questionarios))
+    this.questionario.push(this.createQuestionario(this.questionario))
 
-    console.log(this.formulario.get('questionarios'))
+    console.log(this.questionario)    
     this.step++
+  }
+  finalizar(){
+
   }
 
   //---------------------------------------------- ADD CAMPOS
@@ -120,7 +122,7 @@ export class AdminComponent {
     this.valQuest.push(this.createQuest())
   }
 
-
+  //---------------------------------------------- SALVAR INFORMAÇÕES
   saveAval() {
     const { periodo, ativo, terminado, data_ativacao, data_limite, titulo, publico_alvo, observacao } = this.formulario.value;
     this.avaliacao = {
@@ -156,18 +158,15 @@ export class AdminComponent {
 
     let zeraValQues = this.formulario.controls.questionarios.get('valQuest') as FormArray
     while (zeraValQues.length > 1) zeraValQues.removeAt(0)
+  }
 
+  teste(){
     console.log(this.questionario)
   }
 
   //-----------------------------------------------------------------------------------------------------------------------------------
 
   /*
-  getItems() {
-    for (var i = 0; i < this.questionarios.length; i++) {
-      console.log(this.questionarios[i]["topico"])
-    }
-  }
 
   delQuest(questoes) {
     console.log(questoes)

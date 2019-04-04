@@ -116,7 +116,6 @@
                       <!-- Valor de Reposta // -->
                       <input matInput placeholder="Descrição" formControlName="labels_respostas">
                     </mat-form-field> <!-- Valor de Reposta // -->
-
                   </div>
                 </div>
               </div>
@@ -184,16 +183,30 @@
             {{this.formulario.get('periodo').value}}</p>
           <p>Observações: {{this.formulario.get('observacao').value}}</p>
         </div>
+        <mat-divider></mat-divider>
+
+        <div class="cardprincipal" *ngFor="let q of questionario; let i = index;"><!-- //DUVIDA AQUI -->
+          <h3>{{i+1}} - {{q.topico}}</h3>
+
+          <div formGroupName="questionarios" class="container">
+
+            <mat-form-field class="full-width">
+              <input matInput type="text" placeholder="Tópico" formControlName="topico" value="" autocomplete="off">
+            </mat-form-field>
+            <br /><br />
+          </div>
 
 
+          <mat-divider></mat-divider>
+        </div>
 
-
+        <!--<button class="buttonClicks" mat-mini-fab type="submit" (click)="teste()">TESTE</button>-->
 
       </mat-card>
       <!-------------------------------------- Conteudo -------------------------------------->
       <mat-action-row>
         <button mat-button color="warn" (click)="prevStep()">Voltar</button>
-        <button mat-button color="primary" (click)="nextStep()">Finalizar</button>
+        <button mat-button color="primary" (click)="finalizar()">Finalizar</button>
       </mat-action-row>
     </mat-expansion-panel>
 
