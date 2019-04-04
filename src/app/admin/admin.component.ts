@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 export interface Publico {
@@ -17,27 +17,25 @@ export interface Resposta {
   styleUrls: ['./admin.component.css'],
   providers: []
 })
-export class AdminComponent implements OnInit {
-  avaliacao = null;
-  questionarios = [];
-  data: any;
-  constructor(private formBuilder: FormBuilder) { }
+export class AdminComponent {
+  
+  questForm = this.fb.group({ 
+    topico: ['', Validators.required],
+    publico_alvo: ['', Validators.required],
+    por_disciplina: [false],
+    tipo_resposta: ['', Validators.required],     
+    labels_respostas: [''],
+    possiveis_respostas: [''],      
+    questoes: [''],
+    valQuest: this.fb.array([this.createQuest()]),
+    valResp: this.fb.array([this.createValResp()])
+  });
 
-  ngOnInit() {
-    this.avalFormGroup = this.formBuilder.group({
-      $key: ['0'],
-      titulo: ['', Validators.required],
-      questionarios: [''],
-      periodo: ['', Validators.required],
-      ativo: [false],
-      terminado: [false],
-      data_ativacao: [''],
-      data_limite: ['', Validators.required],
-      observacao: [''],
-      publico_alvo: ['', Validators.required]
-    });
-
-    this.questForm = this.formBuilder.group({
+  formulario = this.fb.group({
+    titulo: ['', Validators.required],
+    questionariosArray: this.fb.array([]), 
+    /*
+     questionarios: this.fb.group({
       topico: ['', Validators.required],
       publico_alvo: ['', Validators.required],
       por_disciplina: [false],
@@ -45,63 +43,74 @@ export class AdminComponent implements OnInit {
       labels_respostas: [''],
       possiveis_respostas: [''],      
       questoes: [''],
-      valQuest: this.formBuilder.array([this.createQuest()]),
-      valResp: this.formBuilder.array([this.createValResp()])
-    });
+      valQuest: this.fb.array([this.createQuest()]),
+      valResp: this.fb.array([this.createValResp()]),
+    }), 
+    */
+    periodo: ['', Validators.required],
+    ativo: [false],
+    terminado: [false],
+    data_ativacao: [''],
+    data_limite: ['', Validators.required],
+    observacao: [''],
+    publico_alvo: ['', Validators.required]
+  });
 
-    this.data = this.getData();
+  avaliacao = null;
+  questionarios = [];
+
+  constructor(private fb: FormBuilder) { }
+
+  ngOnInit() {
   }
 
 
-  //---------------------------------------------- FORMARRAY E FORMGROUP
-  avalFormGroup: FormGroup //FormGroup
-  questForm: FormGroup //FormGroup
+  //---------------------------------------------- FORMARRAY
   valQuest: FormArray //FormArray
   valResp: FormArray //FormArray
-  
-
-
+  questionariosArray: FormArray //FormArray  
 
   //---------------------------------------------- VARIÁVEIS
   date = new FormControl(new Date())
   serializedDate = new FormControl((new Date()).toISOString())
-
   step = 0 //Layout - Expansion Panel
   panelOpenState = false //Layout - Expansion Panel
 
-
-
-  //---------------------------------------------- ARRAYS
-  //Layout - List - Publicos
-  tipoPublicos: Publico[] = [
-    { value: '0', viewValue: 'Discentes' },
-    { value: '1', viewValue: 'Docentes' },
-    { value: '2', viewValue: 'Técnicos' }
-  ];
-
-  //Layout - List - Respostas
-  tipoRespostas: Resposta[] = [
-    { value: '0', viewValue: 'Objetiva' },
-    { value: '1', viewValue: 'Texto Curto' },
-    { value: '2', viewValue: 'Texto Longo' }
+  //---------------------------------------------- ARRAYS  
+  tipoPublicos: Publico[] = [//Layout - List - Publicos
+    { value: '0', viewValue: 'Discentes' },{ value: '1', viewValue: 'Docentes' },{ value: '2', viewValue: 'Técnicos' }
+  ];  
+  tipoRespostas: Resposta[] = [//Layout - List - Respostas
+    { value: '0', viewValue: 'Objetiva' },{ value: '1', viewValue: 'Texto Curto' },{ value: '2', viewValue: 'Texto Longo' }
   ];
 
 
 
   //---------------------------------------------- AÇÕES
-  createQuest(): FormGroup {
-    return this.formBuilder.group({
+  createQuest(): FormGroup {//Adicionar novos campos de questões
+    return this.fb.group({
       questoes: ''
     });
   }
 
-  createValResp(): FormGroup {
-    return this.formBuilder.group({
+  createValResp(): FormGroup {//Adicionar novos campos de possiveis respostas
+    return this.fb.group({
       labels_respostas: '',
       possiveis_respostas: ''
     });
   }
 
+  createQuestionario(questionario): FormGroup{
+    return this.fb.group({
+      topico: [questionario.topico, Validators.required],
+      publico_alvo: [questionario.publico_alvo, Validators.required],
+      por_disciplina: [questionario.por_disciplina],
+      tipo_resposta: [questionario.tipo_resposta, Validators.required],     
+      labels: [questionario.labels],
+      respostas: [questionario.respostas],   
+      questoes: [questionario.questoes],
+    });
+  }
  
 
   //---------------------------------------------- AÇÕES
@@ -127,9 +136,18 @@ export class AdminComponent implements OnInit {
     this.valResp = this.questForm.get('valResp') as FormArray
     this.valResp.push(this.createValResp())
   }
+  
+  finalizandoStep() {
+    console.log(this.questionarios)
+    
+    this.questionariosArray = this.formulario.get('questionariosArray') as FormArray
+    this.questionariosArray.push(this.createQuestionario(this.questionarios))
+    console.log(this.questionariosArray)
+    this.step++
+  }
 
   saveAval() {
-    const {periodo, ativo, terminado, data_ativacao, data_limite, titulo, publico_alvo, observacao} = this.avalFormGroup.value;
+    const {periodo, ativo, terminado, data_ativacao, data_limite, titulo, publico_alvo, observacao} = this.formulario.value;
     this.avaliacao = {
       periodo,
       ativo,
@@ -155,7 +173,6 @@ export class AdminComponent implements OnInit {
       respostas: valResp.map(p => p.possiveis_respostas),
       labels: valResp.map(v => v.labels_respostas)
     })
-
     this.questForm.reset()
     this.questForm.get('por_disciplina').setValue(false)
 
@@ -164,16 +181,16 @@ export class AdminComponent implements OnInit {
 
     let zeraValQues = this.questForm.get('valQuest') as FormArray
     while (zeraValQues.length > 1) zeraValQues.removeAt(0)
-    
   }
 
-  finalizandoStep() {
-    console.log(this.questionarios)
-    this.step++
-  }
 
-  getData() {
-    return this.questionarios
+  //-----------------------------------------------------------------------------------------------------------------------------------
+
+  //Testes
+  getItems() {
+    for(var i=0; i < this.questionarios.length; i++){
+      console.log(this.questionarios[i]["topico"])
+    }
   }
 
   delQuest(questoes){
