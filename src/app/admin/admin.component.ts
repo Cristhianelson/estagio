@@ -21,17 +21,8 @@ export class AdminComponent {
 
   formulario = this.fb.group({
     titulo: ['', Validators.required],
-    questionarios: this.fb.group({
-      topico: ['', Validators.required],
-      publico_alvo: ['', Validators.required],
-      por_disciplina: [false],
-      tipo_resposta: ['', Validators.required],
-      labels_respostas: [''],
-      possiveis_respostas: [''],
-      questoes: [''],
-      valResp: this.fb.array([this.createValResp()]),
-      valQuest: this.fb.array([this.createQuest()]),
-    }),
+    questionarios: this.fb.array([this.createQuestionario2()
+    ]),
     periodo: ['', Validators.required],
     ativo: [false],
     terminado: [false],
@@ -48,7 +39,6 @@ export class AdminComponent {
 
   ngOnInit() {
   }
-
 
   //---------------------------------------------- FORMARRAY e VARIÁVEIS
   valResp: FormArray //FormArray
@@ -79,16 +69,36 @@ export class AdminComponent {
       questoes: ''
     });
   }
-  createQuestionario(questionario): FormGroup {//DUVIDA AQUI
+  createQuestionario(questionario): FormGroup {
     return this.fb.group({
-      topico: [questionario.topico, Validators.required],
-      publico_alvo: [questionario.publico_alvo, Validators.required],
+      topico: [questionario.topico],
+      publico_alvo: [questionario.publico_alvo],
       por_disciplina: [questionario.por_disciplina],
-      tipo_resposta: [questionario.tipo_resposta, Validators.required],
+      tipo_resposta: [questionario.tipo_resposta],
       labels: [questionario.labels],
       respostas: [questionario.respostas],
       questoes: [questionario.questoes],
+      valQuest: this.fb.array([this.createQuest()]),
+      valResp: this.fb.array([this.createValResp()]),
     });
+  }
+
+  createQuestionario2(): FormGroup {
+    return this.fb.group({
+      topico: [''],
+      publico_alvo: [''],
+      por_disciplina: [''],
+      tipo_resposta: [''],
+      labels: [''],
+      respostas: [''],
+      questoes: [''],
+      valQuest: this.fb.array([this.createQuest()]),
+      valResp: this.fb.array([this.createValResp()]),
+    });
+  }
+
+  get questionarios() {
+    return this.formulario.get('questionarios') as FormArray;
   }
 
   //---------------------------------------------- AÇÕES STEP
@@ -102,10 +112,12 @@ export class AdminComponent {
     this.step--
   }
   finalizandoStep() { //DUVIDA AQUI   
-    this.formulario.controls.questionarios = this.formulario.get('questionarios') as FormArray
-    this.questionario.push(this.createQuestionario(this.questionario))
+    // this.formulario.controls.questionarios = this.formulario.get('questionarios') as FormArray 
+    // this.questionario.push(this.createQuestionario(this.questionario))
+    let form = this.formulario.get('questionarios') as FormArray 
+    form.push(this.createQuestionario2())
 
-    console.log(this.questionario)    
+    console.log(this.formulario)    
     this.step++
   }
   finalizar(){
@@ -114,7 +126,7 @@ export class AdminComponent {
 
   //---------------------------------------------- ADD CAMPOS
   addValResp(): void {//Adicionar novos campos de possiveis respostas
-    this.valResp = this.formulario.controls.questionarios.get('valResp') as FormArray
+    this.valResp = this.formulario.controls.questionarios.get('valResp') as FormArray 
     this.valResp.push(this.createValResp())
   }
   addQuest(): void {//Adicionar novos campos de questões
@@ -139,8 +151,9 @@ export class AdminComponent {
     this.step++
   }
 
-  saveQuest() {
-    const { topico, publico_alvo, por_disciplina, tipo_resposta, valQuest, valResp } = this.formulario.controls.questionarios.value;
+  saveQuest() {    
+    const i = this.questionarios.length -1
+    const { topico, publico_alvo, por_disciplina, tipo_resposta, valQuest, valResp } = this.questionarios.value[i];
     this.questionario.push({
       topico,
       publico_alvo,
@@ -150,14 +163,15 @@ export class AdminComponent {
       respostas: valResp.map(p => p.possiveis_respostas),
       labels: valResp.map(v => v.labels_respostas)
     })
-    this.formulario.controls.questionarios.reset()
-    this.formulario.controls.questionarios.get('por_disciplina').setValue(false)
+    this.questionarios.push(this.createQuestionario2())
+    //this.formulario.controls.questionarios.reset()
+    //this.questionarios.get('por_disciplina').setValue(false)
 
-    let zeraValResp = this.formulario.controls.questionarios.get('valResp') as FormArray
-    while (zeraValResp.length > 1) zeraValResp.removeAt(0)
+    // let zeraValResp = this.formulario.controls.questionarios.get('valResp') as FormArray
+    // while (zeraValResp.length > 1) zeraValResp.removeAt(0)
 
-    let zeraValQues = this.formulario.controls.questionarios.get('valQuest') as FormArray
-    while (zeraValQues.length > 1) zeraValQues.removeAt(0)
+    // let zeraValQues = this.formulario.controls.questionarios.get('valQuest') as FormArray
+    // while (zeraValQues.length > 1) zeraValQues.removeAt(0)
   }
 
   teste(){
