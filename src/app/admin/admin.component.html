@@ -66,7 +66,7 @@
       </mat-expansion-panel-header>
       <!-------------------------------------- Questionário -------------------------------------->
       <div class="container" formArrayName="questionarios">
-        <div *ngFor="let teste of questionarios.controls; let i=index">
+        <div *ngFor="let item of questionarios.controls; let i=index">
 
           <div [formGroupName]="i" *ngIf="this.questionarios.length-1 == i">
             <mat-form-field class="full-width">
@@ -189,15 +189,95 @@
         </div>
         <mat-divider></mat-divider>
 
-        <div class="cardprincipal" *ngFor="let quest of questionarios.controls; let j=index">
+        <div class="cardprincipal" *ngFor="let quest of questionarios.value; let j=index">
           <h3>{{j+1}} - {{quest.topico}}</h3>
 
           <div class="container">
             <div [formGroupName]="j">
               <mat-form-field class="full-width">
-                <input matInput type="text" placeholder="Tópico" formControlName="topico" value="" autocomplete="off">
-              </mat-form-field>
+                <!-- Tópico -->
+                <input matInput type="text" placeholder="Tópico" formControlName="topico" value="{{quest.topico}}"
+                  autocomplete="off">
+              </mat-form-field><!-- Tópico -->
               <br /><br />
+              <!--  
+
+                <div>
+              <!-- Público Alvo 
+              <label>Público Alvo</label>
+              <mat-selection-list matInput #publicos formControlName="publico_alvo">
+                <mat-list-option *ngFor="let publico of tipoPublicos" [value]="publico.value">
+                  {{publico.viewValue}}
+                </mat-list-option>
+              </mat-selection-list>
+            </div><!-- Público Alvo <br />
+
+            <!-- Típo de resposta 
+            <div>
+              <label id="radio-group-label">Escolha o típo de resposta desejado</label>
+              <mat-radio-group aria-labelledby="example-radio-group-label" class="radio-group"
+                formControlName="tipo_resposta">
+                <mat-radio-button class="radio-button" *ngFor="let tpresposta of tipoRespostas"
+                  [value]="tpresposta.value">
+                  {{tpresposta.viewValue}}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div><!-- Típo de resposta -->
+
+            <!--  Possiveis respostas 
+                Possiveis Respostas
+                <div
+                  *ngFor="let item of this.formulario.controls.questionarios.get('valResp').controls; let i = index;">
+                  <div formArrayName="valResp">
+                    <div [formGroupName]="i">
+                      <mat-form-field>
+                        <input matInput placeholder="Valor/Reposta" formControlName="possiveis_respostas" value="{{quest.possiveis_respostas}}">
+                      </mat-form-field> 
+                      <mat-form-field class="slide-toggle">
+                        <input matInput placeholder="Descrição" formControlName="labels_respostas" value="{{quest.labels_respostas}}">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+            <br />-->
+
+            <!-- Por disciplina 
+            <label>
+              <mat-slide-toggle formControlName="por_disciplina" class="margin">Por disciplina</mat-slide-toggle>
+            </label> <!-- Por disciplina 
+            <br /><br />
+
+            <!--  Possiveis Questão 
+            <mat-accordion *ngIf="this.formulario.controls.questionarios.value.por_disciplina == '0'">
+              <!--Expansion Panel 
+              <mat-expansion-panel>
+                <!--Expansion Panel 
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Questões
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div
+                  *ngFor="let item of this.formulario.controls.questionarios.get('valQuest').controls; let i = index;">
+                  <div formArrayName="valQuest">
+                    <div [formGroupName]="i">
+                      <mat-form-field class="full-width">
+                        <!-- Questão // -
+                        <input matInput placeholder="Questão" formControlName="questoes">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <button class="buttonClicks" mat-mini-fab type="submit" (click)="addQuest()">
+                  <mat-icon aria-label="Example icon-button with a add icon">add</mat-icon>
+                </button>
+              </mat-expansion-panel>
+              <!--Expansion Panel 
+            </mat-accordion>
+
+
+              -->
+
             </div>
           </div>
 
@@ -205,7 +285,7 @@
           <mat-divider></mat-divider>
         </div>
 
-        <!--<button class="buttonClicks" mat-mini-fab type="submit" (click)="teste()">TESTE</button>-->
+        <button class="buttonClicks" mat-mini-fab type="submit" (click)="teste()">TESTE</button>
 
       </mat-card>
       <!-------------------------------------- Conteudo -------------------------------------->

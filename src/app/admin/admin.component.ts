@@ -117,7 +117,7 @@ export class AdminComponent {
     let form = this.formulario.get('questionarios') as FormArray 
     form.push(this.createQuestionario2())
 
-    console.log(this.formulario)    
+    console.log(this.questionarios)    
     this.step++
   }
   finalizar(){
@@ -175,7 +175,7 @@ export class AdminComponent {
   }
 
   teste(){
-    console.log(this.questionario)
+    console.log(this.questionarios.controls)  
   }
 
   //-----------------------------------------------------------------------------------------------------------------------------------
