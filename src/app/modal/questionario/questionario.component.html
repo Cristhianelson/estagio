@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>QUESTIONÁRIO</h1>
+<div mat-dialog-content>
+  <div class="content">
+    <mat-form-field appearance="legacy">
+      <mat-label>Título do questionário</mat-label>
+      <input matInput placeholder="Insira o título da questionário" [(ngModel)]="data.topico" autocomplete="off">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Tipo</mat-label>
+      <mat-select [(value)]="data.tipo_resposta">
+        <mat-option value="curta">Texto Curto</mat-option>
+        <mat-option value="longa">Texto Longo</mat-option>
+        <mat-option value="objetiva">Objetiva</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="centralizar">
+      <mat-slide-toggle color="primary" [checked]="data.por_disciplina" (change)="change()">
+        Por disciplina
+      </mat-slide-toggle>
+    </div>
+
+    <mat-checkbox class="example-margin" [(ngModel)]="data.publico_alvo[0]">
+      Docentes
+    </mat-checkbox>
+    <mat-checkbox class="example-margin" [(ngModel)]="data.publico_alvo[1]">
+      Discentes
+    </mat-checkbox>
+    <mat-checkbox class="example-margin" [(ngModel)]="data.publico_alvo[2]">
+      Técnicos
+    </mat-checkbox>
+
+  </div>
+</div>
+<div mat-dialog-actions class="container-actions">
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button [mat-dialog-close]="data" color="primary" cdkFocusInitial>Salvar</button>
+</div>

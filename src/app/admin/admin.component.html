@@ -1,60 +1,57 @@
-<mat-accordion class="example-headers-align">
-  <form [formGroup]="formulario" class="form">
+<div class="container">
+  <mat-accordion>
     <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
-      <!-- Expansion Panel -->
       <mat-expansion-panel-header>
         <mat-panel-title>
           Avaliação
         </mat-panel-title>
       </mat-expansion-panel-header>
       <!-------------------------------------- Avaliação -------------------------------------->
-      <div class="container">
-        <mat-form-field class="full-width">
-          <!-- Título //-->
-          <input matInput placeholder="Título" formControlName="titulo" autocomplete="off">
-        </mat-form-field> <!-- Título //-->
-        <div>
-          <mat-form-field class="width-10">
-            <!-- Período -->
-            <input matInput placeholder="Período" formControlName="periodo" autocomplete="off">
-          </mat-form-field> <!-- Período a -->
+      <div class="content" *ngIf="status == 'view'">
+        <mat-form-field appearance="legacy" class="input-avaliacao">
+          <mat-label>Título da Avaliação</mat-label>
+          <input matInput placeholder="Insira o título da avaliação" [(ngModel)]="avaliacao.titulo" autocomplete="off">
+        </mat-form-field>
 
-          <label class="slide-toggle">
-            <!-- Status Ativado -->
-            <mat-slide-toggle formControlName="ativo" class="margin">Ativo</mat-slide-toggle>
-          </label>
+        <mat-form-field appearance="legacy" class="input-avaliacao">
+          <mat-label>Observação</mat-label>
+          <textarea matInput placeholder="Insira uma observação" [(ngModel)]="avaliacao.observacao"
+            autocomplete="off"></textarea>
+        </mat-form-field>
 
-          <label class="slide-toggle">
-            <!-- Status Terminado -->
-            <mat-slide-toggle formControlName="terminado" class="margin">Terminado</mat-slide-toggle>
-          </label>
+        <mat-form-field appearance="legacy" class="periodo">
+          <mat-label>Período</mat-label>
+          <input matInput placeholder="Insira o período" [(ngModel)]="avaliacao.periodo">
+        </mat-form-field>
+
+
+        <div class="toggle-ativo">
+          <mat-slide-toggle color="primary" [checked]="avaliacao.ativo" (change)="change()">
+            Ativo
+          </mat-slide-toggle>
         </div>
 
-        <mat-form-field class="full-width">
-          <!-- Observação -->
-          <textarea matInput placeholder="Observações" formControlName="observacao"> </textarea>
-        </mat-form-field> <!-- Observação --> <br /><br />
-
-        <div>
-          <!-- Público Limite -->
-          <label>Público Alvo</label>
-          <mat-selection-list matInput #publicos formControlName="publico_alvo">
-            <mat-list-option *ngFor="let publico of tipoPublicos" [value]="publico.value">
-              {{publico.viewValue}}
-            </mat-list-option>
-          </mat-selection-list>
-        </div><br /><!-- Público Limite -->
-
         <mat-form-field>
-          <!-- Data Limite -->
-          <input matInput placeholder="Data Limite" formControlName="data_limite" [matDatepicker]="picker2">
-          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-          <mat-datepicker #picker2></mat-datepicker>
-        </mat-form-field> <!-- Data Limite -->
+          <input matInput placeholder="Data Limite" [(ngModel)]="avaliacao.data_limite" [matDatepicker]="picker">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <label class="label-avaliacao">Público Alvo</label>
+        <mat-checkbox [(ngModel)]="avaliacao.publico_alvo[0]">
+          Docentes
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="avaliacao.publico_alvo[1]">
+          Discentes
+        </mat-checkbox>
+        <mat-checkbox [(ngModel)]="avaliacao.publico_alvo[2]">
+          Técnicos
+        </mat-checkbox>
       </div>
+
       <!-------------------------------------- Avaliação -------------------------------------->
       <mat-action-row>
-        <button mat-button color="primary" type="submit" (click)="salvar()">Próximo</button>
+        <button mat-button color="primary" (click)="salvarAvaliacao()">Salvar</button>
       </mat-action-row>
     </mat-expansion-panel>
 
@@ -65,111 +62,120 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <!-------------------------------------- Questionário -------------------------------------->
-      <div class="container" formArrayName="questionarios">
-        <ng-container *ngFor="let item of questionarios.controls; let i=index">
-          <div [formGroupName]="i">
-            <mat-form-field class="full-width">
-              <input matInput type="text" formControlName="topico" autocomplete="off" value="" placeholder="Tópico">
-            </mat-form-field><br /><br />
+      <div class="questoes">
+        <mat-card class="card-questao" *ngFor="let questao of avaliacao.questionarios; let j=index">
+          <div class="questao-header">
+            <h4>{{questao.topico}}</h4>
+            <div class="menulateral">
+              <button mat-icon-button [matMenuTriggerFor]="menuQuestao" (click)="selecionarQuestao(j)">
+                <mat-icon aria-label="Menu da questão">more_vert</mat-icon>
+              </button>
+            </div>
+          </div>
 
-            <div>
-              <label>Público Alvo</label>
-              <mat-selection-list matInput #publicos formControlName="publico_alvo">
-                <mat-list-option *ngFor="let publico of tipoPublicos" [value]="publico.value">
-                  {{publico.viewValue}}
-                </mat-list-option>
-              </mat-selection-list>
-            </div><br />
+          <div class="questao-content">
+            <mat-form-field *ngIf="questao.tipo_resposta == 'curta'">
+              <input matInput placeholder="Resposta curta" disabled>
+            </mat-form-field>
 
-            <!-- Típo de resposta -->
-            <div>
-              <label id="radio-group-label">Escolha o típo de resposta desejado</label>
-              <mat-radio-group aria-labelledby="example-radio-group-label" class="radio-group"
-                formControlName="tipo_resposta">
-                <mat-radio-button class="radio-button" *ngFor="let tpresposta of tipoRespostas"
-                  [value]="tpresposta.value">
-                  {{tpresposta.viewValue}}
+            <mat-form-field *ngIf="questao.tipo_resposta == 'longa'">
+              <textarea matInput placeholder="Resposta longa" disabled></textarea>
+            </mat-form-field>
+
+            <div *ngIf="questao.tipo_resposta == 'objetiva'">
+              <mat-radio-group disabled={{true}}>
+                <mat-radio-button *ngFor="let resposta of questao.possiveis_respostas;let k=index" [value]="resposta">
+                  {{questao.labels_respostas[k]}}
+                  <mat-icon class="icon-radio" (click)="delObjetiva(j,k)"
+                    matTooltip='Apagar opção "{{questao.labels_respostas[k]}}"'>delete</mat-icon>
+                  <mat-icon class="icon-radio" matTooltip='Editar opção "{{questao.labels_respostas[k]}}"'>create
+                  </mat-icon>
                 </mat-radio-button>
               </mat-radio-group>
-            </div><!-- Típo de resposta -->
 
-            <!--  Possiveis respostas -->
-            <mat-accordion *ngIf="this.questionarios.value[i].tipo_resposta == '0'">
-              <!--Expansion Panel -->
-              <mat-expansion-panel>
-                <!--Expansion Panel -->
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    Possiveis Respostas
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
+              <button mat-icon-button color="primary" (click)="addObjetiva(j)" matTooltip="Adicionar opção">
+                <mat-icon>add</mat-icon>
+              </button>
 
-                <div formArrayName="possiveis_respostas">
-                  <mat-form-field *ngFor="let item of possiveis_respostas.controls; let j=index">
-                    <input matInput type="text" [formControlName]="j" autocomplete="off" value=""
-                      placeholder="Valor/Reposta">
+              <div *ngIf="questao.por_disciplina == false" class="questao">
+                <h5>QUESTÕES</h5>   
+                             
+                  <mat-form-field *ngFor="let ques of questao.questoes; let z=index">
+                    <textarea matInput placeholder="Questão" [(ngModel)]="questao.questoes[z]"></textarea>
                   </mat-form-field>
+
+                <div class="btn_questao">
+                  <button mat-icon-button color="primary" (click)="addQuestao(j)" matTooltip="Adicionar questão">
+                    <mat-icon>add</mat-icon>
+                  </button>
                 </div>
-                <div formArrayName="labels_respostas">
-                  <mat-form-field *ngFor="let item of possiveis_respostas.controls; let k=index">
-                    <input matInput type="text" [formControlName]="k" autocomplete="off" value=""
-                      placeholder="Descrição">
-                  </mat-form-field>
-                </div>
-                <button class="buttonClicks" mat-mini-fab type="submit" (click)="addTipoResposta()">
-                  <mat-icon>add</mat-icon>
-                </button>
-              </mat-expansion-panel>
-              <!--Expansion Panel -->
-            </mat-accordion>
-            <br />
+              </div>
+            </div>
 
-            <!-- Por disciplina -->
-            <label>
-              <mat-slide-toggle formControlName="por_disciplina" class="margin">Por disciplina</mat-slide-toggle>
-            </label> <!-- Por disciplina -->
-            <br /><br />
-
-            <!--  Possiveis Questão -->
-            <mat-accordion *ngIf="this.questionarios.value[i].por_disciplina != '1'">
-              <!--Expansion Panel -->
-              <mat-expansion-panel>
-                <!--Expansion Panel -->
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    Questões
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-
-                <div formArrayName="questoes">
-                  <mat-form-field *ngFor="let item of questoes.controls; let l=index" class="full-width">
-                    <input matInput type="text" [formControlName]="l" autocomplete="off" value=""
-                      placeholder="Questão">
-                  </mat-form-field>
-                </div>
-
-                <button class="buttonClicks" mat-mini-fab type="submit" (click)="addQuestao()">
-                  <mat-icon>add</mat-icon>
-                </button>
-              </mat-expansion-panel>
-              <!--Expansion Panel -->
-            </mat-accordion>
-
-            <mat-divider></mat-divider>
-            <br /><br />
           </div>
-        </ng-container>
+        </mat-card>
+
+        <button mat-raised-button color="primary" (click)="newQuestao()" matTooltip="Adicionar questionário">Adicionar
+          Questionário</button>
       </div>
-      <!--
-      <button mat-button type="button" color="primary" (click)="teste()">
-        <mat-icon>add</mat-icon>
-      </button>-->
+
       <!-------------------------------------- Questionário -------------------------------------->
       <mat-action-row>
         <button mat-button color="warn" (click)="prevStep()">Voltar</button>
-        <button mat-button color="accent" type="button" (click)="novoQuestionario()">Acrescentar</button>
-        <button mat-button color="primary" (click)="salvar()">Finalizar</button>
+        <button mat-button color="accent" (click)="salvarQuestionario()">Salvar</button>
+        <button mat-button color="primary" (click)="nextStep()">Próximo</button>
       </mat-action-row>
     </mat-expansion-panel>
-  </form>
-</mat-accordion><!-- Expansion Panel -->
+
+    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Breve Resultado
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <!-------------------------------------- Breve Resultado -------------------------------------->
+      <div class="questoes">
+        <mat-card class="card-questao" *ngFor="let questao of avaliacao.questionarios; let j=index">
+          <div class="questao-header">
+            <h4>{{questao.topico}}</h4>
+          </div>
+
+          <div class="questao-content">
+            <mat-form-field *ngIf="questao.tipo_resposta == 'curta'">
+              <input matInput placeholder="Resposta curta" disabled>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="questao.tipo_resposta == 'longa'">
+              <textarea matInput placeholder="Resposta longa" disabled></textarea>
+            </mat-form-field>
+
+            <div *ngIf="questao.tipo_resposta == 'objetiva'">
+              <mat-radio-group disabled={{true}}>
+                <mat-radio-button *ngFor="let resposta of questao.possiveis_respostas;let k=index" [value]="resposta">
+                  {{questao.labels_respostas[k]}}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+          </div>
+        </mat-card>
+      </div>
+      <!-------------------------------------- Breve Resultado -------------------------------------->
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Voltar</button>
+        <button mat-button color="primary" (click)="nextStep()">Finalizar</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+  </mat-accordion>
+  <mat-menu #menuQuestao="matMenu">
+    <button mat-menu-item (click)="editQuest()">
+      <mat-icon>create</mat-icon>
+      <span>Editar</span>
+    </button>
+    <button mat-menu-item (click)="delQuest()">
+      <mat-icon>delete</mat-icon>
+      <span>Excluir</span>
+    </button>
+  </mat-menu>
+</div>

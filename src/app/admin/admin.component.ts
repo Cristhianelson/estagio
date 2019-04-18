@@ -1,89 +1,137 @@
-import { Component } from '@angular/core';
-import { FormArray, FormBuilder } from '@angular/forms';
-
-export interface Resposta { value: string; viewValue: string; }
-export interface Publico { value: string; viewValue: string; }
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { Avaliacao } from '../services/avaliacao.service';
+import { ModalQuestionarioComponent } from '../modal/questionario/questionario.component'
+import { ModalObjetivaComponent } from '../modal/objetiva/objetiva.component'
 
 @Component({
   selector: 'est-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
+  status: 'loading' | 'view' = 'loading'
+  step = 0;
+  avaliacao: Avaliacao
+  indice: number
 
-  formulario = this.formbuilder.group({
-    titulo: [''],
-    questionarios: this.formbuilder.array([]),
-    periodo: [''],
-    ativo: [false],
-    terminado: [false],
-    data_ativacao: [''],
-    data_limite: [''],
-    observacao: [''],
-    publico_alvo: [''],    
-    possiveis_respostas: this.formbuilder.array(['']), 
-    labels_respostas: this.formbuilder.array(['']), 
-    questoes: this.formbuilder.array(['']), 
-  });
-
-  questionarios = this.formulario.get('questionarios') as FormArray
-  possiveis_respostas = this.formulario.get('possiveis_respostas') as FormArray
-  labels_respostas = this.formulario.get('labels_respostas') as FormArray
-  questoes = this.formulario.get('labels_respostas') as FormArray
-
-  constructor(private formbuilder: FormBuilder) { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
+    this.avaliacao = {
+      ativo: false,
+      titulo: '',
+      observacao: '',
+      publico_alvo: [false, false, false],
+      questionarios: [],
+      periodo: 20191,
+      data_ativacao: null, 
+      data_limite: null,
+    }
+    
+    this.status = 'view'
   }
 
-  //Layout - Expansion Panel -----------------------------------------------------------------------------------------------------------------------------------------
-  step = 0 
-  panelOpenState = false //Layout - Expansion Panel
-  setStep(index: number) {//Layout - Expansion Panel
-    this.step = index
-  }
-  nextStep() {//Layout - Expansion Panel
-    this.step++
-  }
-  prevStep() {//Layout - Expansion Panel
-    this.step--
-  }
-  //Layout - Expansion Panel -----------------------------------------------------------------------------------------------------------------------------------------
-
-  novoQuestionario() {
-    this.questionarios.push(this.formbuilder.group({      
-      topico: this.formbuilder.control(''),
-      publico_alvo: this.formbuilder.control(''),
-      por_disciplina: this.formbuilder.control(''),
-      tipo_resposta: this.formbuilder.control(''),
-      possiveis_respostas: this.formbuilder.control(''),
-      labels_respostas: this.formbuilder.control(''),
-      questoes: this.formbuilder.control(''),
-    }));
+  setStep(index: number) {
+    this.step = index;
   }
 
-  tipoPublicos: Publico[] = [
-    { value: '0', viewValue: 'Docente' }, { value: '1', viewValue: 'Discente' }, { value: '2', viewValue: 'Tecnico' }
-  ];
-  tipoRespostas: Resposta[] = [
-    { value: '0', viewValue: 'Objetiva' }, { value: '1', viewValue: 'Texto Curto' }, { value: '2', viewValue: 'Texto Longo' }
-  ];
-  
- 
-  salvar() {
-    console.log(this.formulario.value);
-    this.step++
-  }  
-  addTipoResposta() {    
-    this.possiveis_respostas.push(this.formbuilder.control(''))
-    this.labels_respostas.push(this.formbuilder.control(''))
-  }
-  addQuestao() {    
-    this.questoes.push(this.formbuilder.control(''))
+  nextStep() {
+    this.step++;
   }
 
-  teste(){
-    console.log(this.questionarios.value.possiveis_respostas);
+  prevStep() {
+    this.step--;
+  }
+
+  change() {
+    this.avaliacao.ativo = !this.avaliacao.ativo
+  }
+
+  salvarAvaliacao() {
+    console.log(this.avaliacao)
+    this.nextStep()
+  }
+
+  selecionarQuestao(i) {
+    this.indice = i
+  }
+
+  newQuestao() {
+    const data = {
+      topico: '',
+      publico_alvo: [false, false, false],
+      por_disciplina: false,
+      tipo_resposta: "curta",
+      questoes: [],
+      possiveis_respostas: [],
+      labels_respostas: [],
+    }
+    const dialogRef = this.dialog.open(ModalQuestionarioComponent, {
+      width: '550px',
+      data
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.avaliacao.questionarios.push(result)
+      }
+    });
+
+  }
+
+  editQuest() {
+    const dialogRef = this.dialog.open(ModalQuestionarioComponent, {
+      width: '550px',
+      data: this.avaliacao.questionarios[this.indice]
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+    });
+  }
+
+  delQuest() {
+    this.avaliacao.questionarios.splice(this.indice, 1)
+  }
+
+  addObjetiva(i) {
+    this.indice = i
+    const q = this.avaliacao.questionarios[i]
+    const indice = q.labels_respostas ? q.labels_respostas.length : 0
+
+    const dialogRef = this.dialog.open(ModalObjetivaComponent, {
+      width: '260px',
+      data: { label: `Opção ${indice + 1}`, valor: indice, indice }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (!q.labels_respostas) {
+          q.labels_respostas = []
+          q.possiveis_respostas = []
+        }
+
+        q.labels_respostas.push(result.label)
+        q.possiveis_respostas.push(result.valor)
+      }
+    });
+  }
+
+  delObjetiva(i, indice) {
+    const q = this.avaliacao.questionarios[i]
+    q.possiveis_respostas.splice(indice, 1)
+    q.labels_respostas.splice(indice, 1)
+  }
+
+  salvarQuestionario() {
+    console.log(this.avaliacao.questionarios)
+    this.nextStep()
+  }
+
+  addQuestao(i) {
+    let q = this.avaliacao.questionarios[i].questoes
+    q.push("Pergunta " + (q.length+1))
   }
 
 }

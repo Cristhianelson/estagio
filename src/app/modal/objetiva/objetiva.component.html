@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Alternativa {{data.indice + 1}}</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="outline">
+    <mat-label>Valor</mat-label>
+    <input matInput placeholder="Valor" [(ngModel)]="data.valor" type="number">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Label</mat-label>
+    <input matInput placeholder="Label" [(ngModel)]="data.label" type="text">
+  </mat-form-field>
+  
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button [mat-dialog-close]="data" color="primary" cdkFocusInitial>Ok</button>
+</div>

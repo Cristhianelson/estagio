@@ -1,80 +1,118 @@
-.cardprincipal {
-  min-width: 50%;
-  margin: auto;
-  margin-top: 20px;
-}
-
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  margin: 15px 0;
-}
-  
-.radio-button {
-  margin: 5px;
-}
-
 .container {
-  display: flex;
-  flex-direction: column;
-  padding-top: 5px;
+    width: 80%;
+    margin: auto;
+    padding-top: 20px;
 }
 
-.form {
-  min-width: 80%;
-  max-width: 95%;
-  width: 100%;
-  align-items: center;
-  margin: auto;
-  margin-top: 1px;
+.content {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
-.full-width {
-  width: 100%;
+.input-avaliacao {
+    width: 100%;
 }
 
-.metade-width {
-  width: 50%;
+.periodo {
+    width: 30%;
 }
 
-.width-10 {
-  width: 10%;
+.toggle-ativo {
+    width: 70%;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
 }
 
-.slide-toggle {
-  flex-direction: row;
-  padding-left: 20px;
+.label-avaliacao {
+    width: 100%;
+    padding-top: 7px;
 }
 
-table {
-  width: 100%;
-}
+.questoes, .card-questao {
+    display: flex;
+    width: 95%;
+    margin: auto;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-top: 0;
+  }
 
-.buttonClicks {
-  margin: 16px 8px;
-  margin: auto;
-  display: flex;
-}
+  .card-questao {
+    margin-top: 10px;
+    background-color: #fafafa;
+  }
+  
+  .questoes > button {
+    margin: 10px;
+  }
+  
+  .questao-header, .questao-content {
+    display: flex;
+    width: 100%;
+    margin: auto;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .questao-content {
+    justify-content: flex-start;
+  }
+  
+  .questao-header > h4 {
+    width: 90%;
+  }
+  
+  .questao-header > .menulateral {
+    float: right;
+    margin-top: 5px;
+  }
+  
+  .questao-content > div {
+    width: 100%;
+  }
+  
+  .questao-content > mat-form-field {
+    width: 100%;
+  }
+  
+  mat-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    width: 100%;
+  }
+  
+  mat-radio-button {
+    margin: 3px;
+  }
+  
+  :host ::ng-deep .mat-radio-label, :host ::ng-deep .mat-radio-label-content {
+    width: 100%;
+  }
+  
+  .icon-radio {
+    float: right;
+  }
 
-.padding1{
-  margin-top: 20px;
-}
+  .questao {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
 
-/*Layout - Expansion Panel*/
-.example-headers-align .mat-expansion-panel-header-title,
-.example-headers-align .mat-expansion-panel-header-description {
-  flex-basis: 0;
-}
+  .questao > mat-form-field {
+    width: 100%
+  }
 
-.example-headers-align .mat-expansion-panel-header-description {
-  justify-content: space-between;
-  align-items: center;
-}
-
-mat-form-field {
-  margin-right: 12px;
-}
-
-.menuBotoes{
-  float: right;
-}
+  .btn_questao {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }

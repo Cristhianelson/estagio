@@ -1,0 +1,25 @@
+h1 {
+    text-align: center;
+}
+.content {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+.centralizar {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.container-actions {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
