@@ -98,11 +98,11 @@
               </button>
 
               <div *ngIf="questao.por_disciplina == false" class="questao">
-                <h5>QUESTÕES</h5>   
-                             
-                  <mat-form-field *ngFor="let ques of questao.questoes; let z=index">
-                    <textarea matInput placeholder="Questão" [(ngModel)]="questao.questoes[z]"></textarea>
-                  </mat-form-field>
+                <h5>QUESTÕES</h5>
+
+                <mat-form-field *ngFor="let ques of questao.questoes; let z=index">
+                  <textarea matInput placeholder="Questão" [(ngModel)]="questao.questoes[z]"></textarea>
+                </mat-form-field>
 
                 <div class="btn_questao">
                   <button mat-icon-button color="primary" (click)="addQuestao(j)" matTooltip="Adicionar questão">
@@ -157,13 +157,19 @@
               </mat-radio-group>
             </div>
 
+            <div *ngIf="questao.por_disciplina != 'true'">
+              <mat-list *ngFor="let quest of questao.questoes;let l=index">
+                <mat-list-item>{{questao.questoes[l]}}</mat-list-item>
+              </mat-list>
+            </div>
+
           </div>
         </mat-card>
       </div>
       <!-------------------------------------- Breve Resultado -------------------------------------->
       <mat-action-row>
         <button mat-button color="warn" (click)="prevStep()">Voltar</button>
-        <button mat-button color="primary" (click)="nextStep()">Finalizar</button>
+        <button mat-button color="primary" (click)="finalizar()">Finalizar</button>
       </mat-action-row>
     </mat-expansion-panel>
 

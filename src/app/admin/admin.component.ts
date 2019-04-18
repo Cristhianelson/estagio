@@ -25,10 +25,10 @@ export class AdminComponent implements OnInit {
       publico_alvo: [false, false, false],
       questionarios: [],
       periodo: 20191,
-      data_ativacao: null, 
+      data_ativacao: null,
       data_limite: null,
     }
-    
+
     this.status = 'view'
   }
 
@@ -131,7 +131,12 @@ export class AdminComponent implements OnInit {
 
   addQuestao(i) {
     let q = this.avaliacao.questionarios[i].questoes
-    q.push("Pergunta " + (q.length+1))
+    q.push("Pergunta " + (q.length + 1))
+  }
+
+  finalizar() {
+    this.step++;
+    console.log("Salva no BD")
   }
 
 }
